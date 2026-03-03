@@ -11,7 +11,7 @@ use Illuminate\Queue\SerializesModels;
 
 class NotificationBroadcastEvent implements ShouldBroadcast
 {
-    use Dispatchable, InteractsWithSockets, SerializesModels;
+  use Dispatchable, InteractsWithSockets, SerializesModels;
 
     public $userId;
     public $notification;
@@ -24,9 +24,11 @@ class NotificationBroadcastEvent implements ShouldBroadcast
         $this->userRole = $userRole;
     }
 
-    public function broadcastOn()
+    public function broadcastOn(): array
     {
-        return new PrivateChannel("notifications.user.{$this->userId}");
+        return [
+            new PrivateChannel("notifications.user.{$this->userId}"),
+        ];
     }
 
     public function broadcastAs()

@@ -2,6 +2,7 @@
 
 namespace App\Notifications;
 
+use App\Notifications\Channels\CustomDatabaseChannel;
 use Illuminate\Notifications\Notification;
 
 class BroadcastNotification extends Notification
@@ -17,12 +18,12 @@ class BroadcastNotification extends Notification
         $this->targetRoles = $targetRoles;
     }
 
-    public function via($notifiable)
+    public function via($notifiable): array
     {
-        return ['database', 'broadcast'];
+        return [CustomDatabaseChannel::class];
     }
 
-    public function toArray($notifiable)
+    public function toArray($notifiable): array
     {
         return [
             'type' => 'broadcast',
