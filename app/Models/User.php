@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use App\Models\notifications;
 
 class User extends Authenticatable
 {
@@ -61,5 +62,30 @@ class User extends Authenticatable
     public function doctor(): HasOne
     {
         return $this->hasOne(doctor::class);
+    }
+    /**
+     * Notifications Relationships
+     */
+    public function notifications()
+    {
+        return $this->hasMany(notifications::class)
+            ->orderBy('created_at', 'desc');
+    }
+
+    public function unreadNotifications()
+    {
+        return $this->notifications()->unread();
+    }
+
+    public function unreadNotificationsCount()
+    {
+        return $this->unreadNotifications()->count();
+    }
+
+    public function markAllNotificationsAsRead()
+    {
+        $this->notifications()
+            ->unread()
+            ->update(['is_read' => true, 'read_at' => now()]);
     }
 }
