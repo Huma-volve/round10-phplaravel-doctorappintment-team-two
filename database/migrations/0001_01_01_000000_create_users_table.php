@@ -15,8 +15,15 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('email')->unique();
+            $table->string('mobile_number');
+
             $table->timestamp('email_verified_at')->nullable();
+            $table->date('birthdate')->nullable();
+            $table->string('profile_photo')->nullable();
             $table->string('password');
+            $table->enum('role', ['admin', 'patient', 'doctor'])->default('patient');
+            $table->float('latitude');
+            $table->float('longitude');
             $table->rememberToken();
             $table->timestamps();
         });
