@@ -6,6 +6,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use App\Models\notifications;
 
 class User extends Authenticatable
 {
@@ -44,5 +45,31 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    /**
+     * Notifications Relationships
+     */
+    public function notifications()
+    {
+        return $this->hasMany(notifications::class)
+            ->orderBy('created_at', 'desc');
+    }
+
+    public function unreadNotifications()
+    {
+        return $this->notifications()->unread();
+    }
+
+    public function unreadNotificationsCount()
+    {
+        return $this->unreadNotifications()->count();
+    }
+
+    public function markAllNotificationsAsRead()
+    {
+        $this->notifications()
+            ->unread()
+            ->update(['is_read' => true, 'read_at' => now()]);
     }
 }
