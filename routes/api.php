@@ -1,17 +1,19 @@
 <?php
 
-<<<<<<< Updated upstream
-=======
+
+
+
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ReviewController;
->>>>>>> Stashed changes
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
-<<<<<<< Updated upstream
-=======
+
+
 
 Route::prefix('review')->group(function () {
 
@@ -22,4 +24,21 @@ Route::prefix('review')->group(function () {
     Route::put('/{id}', [ReviewController::class, 'update']);
     Route::delete('/{id}', [ReviewController::class, 'destroy']);
 });
->>>>>>> Stashed changes
+
+
+
+
+Route::prefix('users')->group(function () {
+
+    Route::get('/', [ProfileController::class, 'index']);
+
+    Route::get('/{id}', [ProfileController::class, 'show']);
+
+
+    Route::post('/', [ProfileController::class, 'store']);
+
+
+    Route::put('/{id}', [ProfileController::class, 'update']);
+
+    Route::delete('/{id}', [ProfileController::class, 'destroy']);
+});

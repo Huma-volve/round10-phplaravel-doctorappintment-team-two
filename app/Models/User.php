@@ -21,6 +21,16 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+
+
+        'role',
+        'mobile_number',
+        'birthdate',
+        'latitude',
+        'longitude'
+
+
+
     ];
 
     /**
@@ -43,6 +53,20 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+        ];
+    }
+
+    public static function rules()
+    {
+        return [
+            'name'          => ['required', 'string', 'max:255'],
+            'email'         => ['required', 'email', 'unique:users,email'],
+            'password'      => ['nullable', 'same:confirm_password'],
+            'role'          => ['required', 'in:admin,patient,doctor'],
+            'mobile_number' => ['required', 'string', 'max:20'],
+            'birthdate'     => ['nullable', 'date'],
+            'latitude'      => ['nullable', 'required', 'numeric'],
+            'longitude'     => ['nullable', 'required', 'numeric'],
         ];
     }
 }

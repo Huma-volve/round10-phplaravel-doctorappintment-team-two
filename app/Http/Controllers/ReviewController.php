@@ -13,12 +13,13 @@ class ReviewController extends Controller
     use TraitReview;
     public function index()
     {
-        $review = Review::all();
+
+
+        $review = Review::with('doctor')->get();
+
         return $this->apiResponse($review, 'Categories fetched successfully', 200);
     }
-    /**
-     * Show single category
-     */
+
     public function show($id)
     {
         $Review = Review::find($id);
@@ -41,14 +42,11 @@ class ReviewController extends Controller
 
 
             $review = Review::create($validated);
-            if ($review->doctor) {
-                try {
-                    $review->doctor->notify(new \App\Notifications\NotificationsReview($review->id));
-                } catch (\Exception $e) {
-                    // لو في خطأ في notify، هنعرضه بدل 500
-                    return $this->apiresponse(null, "Notification error: " . $e->getMessage(), 500);
-                }
-            }
+
+
+
+
+
 
             return $this->apiresponse($review, "Review created successfully", 201);
         } catch (ValidationException $e) {
