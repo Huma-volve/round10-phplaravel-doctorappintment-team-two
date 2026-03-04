@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class doctor extends Model
+class Doctor extends Model
 {
     /**
      * The attributes that are mass assignable.
@@ -28,6 +28,9 @@ class doctor extends Model
         return $this->belongsTo(User::class);
     }
 
+    public function chats()
+    {
+        return $this->hasMany(Chat::class, 'doctor_id');
     public function clinic(): BelongsTo
     {
         return $this->belongsTo(clinic::class);
