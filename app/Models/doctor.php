@@ -3,8 +3,9 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Notifications\Notifiable;
 
-class doctor extends Model
+class Doctor extends Model
 {
-    //
+    use Notifiable;
 }
