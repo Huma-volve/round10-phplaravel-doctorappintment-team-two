@@ -6,6 +6,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use App\Models\notifications;
 
 class User extends Authenticatable
@@ -23,6 +24,8 @@ class User extends Authenticatable
         'email',
         'password',
         'mobile_number',
+        'birthdate',
+        'profile_photo',
         'role',
         'latitude',
         'longitude',
@@ -51,6 +54,15 @@ class User extends Authenticatable
         ];
     }
 
+    public function patient(): HasOne
+    {
+        return $this->hasOne(patient::class);
+    }
+
+    public function doctor(): HasOne
+    {
+        return $this->hasOne(doctor::class);
+    }
     /**
      * Notifications Relationships
      */
