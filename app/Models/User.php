@@ -45,4 +45,13 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+    public function doctor()
+    {
+        return $this->hasOne(Doctor::class);
+    }
+
+    public function messages()
+    {
+        return $this->hasMany(Message::class, 'sender_id');
+    }
 }
