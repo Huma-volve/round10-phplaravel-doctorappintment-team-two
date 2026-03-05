@@ -17,7 +17,6 @@ return new class extends Migration
             $table->string('title');
             $table->text('body');
             $table->string('type')->nullable(); // e.g., 'appointment_reminder', 'new_message', etc.
-
             $table->boolean('is_read')->default(false);
             $table->timestamps();
         });

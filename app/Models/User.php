@@ -6,6 +6,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\Relations\HasOne;
+use App\Models\notifications;
 
 class User extends Authenticatable
 {
@@ -21,16 +23,12 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
-
-
-        'role',
         'mobile_number',
         'birthdate',
+        'profile_photo',
+        'role',
         'latitude',
-        'longitude'
-
-
-
+        'longitude',
     ];
 
     /**
@@ -68,5 +66,47 @@ class User extends Authenticatable
             'latitude'      => ['nullable', 'required', 'numeric'],
             'longitude'     => ['nullable', 'required', 'numeric'],
         ];
+    public function doctor()
+    {
+        return $this->hasOne(Doctor::class);
+    }
+
+    public function messages()
+    {
+        return $this->hasMany(Message::class, 'sender_id');
+
+    public function patient(): HasOne
+    {
+        return $this->hasOne(patient::class);
+    }
+
+    public function doctor(): HasOne
+    {
+        return $this->hasOne(doctor::class);
+    }
+    /**
+     * Notifications Relationships
+     */
+    public function notifications()
+    {
+        return $this->hasMany(notifications::class)
+            ->orderBy('created_at', 'desc');
+    }
+
+    public function unreadNotifications()
+    {
+        return $this->notifications()->unread();
+    }
+
+    public function unreadNotificationsCount()
+    {
+        return $this->unreadNotifications()->count();
+    }
+
+    public function markAllNotificationsAsRead()
+    {
+        $this->notifications()
+            ->unread()
+            ->update(['is_read' => true, 'read_at' => now()]);
     }
 }
