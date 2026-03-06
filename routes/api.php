@@ -7,7 +7,6 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ReviewController;
 
 use App\Http\Controllers\ChatController;
-use App\Http\Controllers\DoctorController;
 use App\Http\Controllers\MessageController;
 use App\Models\Notifications;
 use App\Models\User;
@@ -30,16 +29,16 @@ Route::middleware('auth:sanctum')->group(function () {
 });
 
 Route::middleware(['auth:sanctum', 'throttle:api'])->group(function () {
-    Route::get('/user', function (Request $request) {
-        return $request->user();
-    });
     Route::apiResource('doctors', DoctorController::class);
-    Route::apiResource('messages', MessageController::class);
+    // Specific chat routes must come BEFORE apiResource
+    Route::get('/chats/favorites', [ChatController::class, 'allFavoriteChats']);
+    Route::post('/chats/{chat}/favorite', [ChatController::class, 'toggleFavorite']);
+    Route::post('/chats/{chat}/markAsRead', [ChatController::class, 'markAsRead']);
+    Route::get('/chats/{chat}/unread-count-message', [ChatController::class, 'unreadMessagesCount']);
+
     Route::apiResource('chats', ChatController::class);
 });
-Route::get('/user', function (Request $request) {
-    return $request->user();
-})->middleware('auth:sanctum');
+
 
 
 
@@ -77,4 +76,3 @@ Route::get('test', function () {
     event(new \App\Events\NotificationBroadcastEvent($user->id, $notification));
     return response()->json(['message' => 'API is working']);
 });
-
