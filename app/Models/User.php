@@ -61,15 +61,18 @@ class User extends Authenticatable
     public function messages()
     {
         return $this->hasMany(Message::class, 'sender_id');
+    }
 
     public function patient(): HasOne
     {
         return $this->hasOne(patient::class);
     }
 
-    public function doctor(): HasOne
+    public function chats()
     {
-        return $this->hasOne(doctor::class);
+        return $this->belongsToMany(Chat::class, 'chat_user')
+            ->withPivot('is_favorite', 'last_read_at')
+            ->withTimestamps();
     }
     /**
      * Notifications Relationships
