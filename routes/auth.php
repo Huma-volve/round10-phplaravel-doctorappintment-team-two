@@ -6,7 +6,9 @@ use App\Http\Controllers\Auth\NewPasswordController;
 use App\Http\Controllers\Auth\PasswordResetLinkController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Auth\VerifyEmailController;
+use App\Http\Controllers\Auth\DeleteAccountController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Auth\SocialController;
 
 Route::post('/register', [RegisteredUserController::class, 'store'])
     ->middleware('guest')
@@ -35,3 +37,7 @@ Route::post('/email/verification-notification', [EmailVerificationNotificationCo
 Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])
     ->middleware('auth:sanctum')
     ->name('logout');
+Route::delete('/delete-account', [DeleteAccountController::class, 'delete'])
+    ->middleware('auth:sanctum');
+Route::get('/login/google', [SocialController::class, 'redirectToGoogle']);
+Route::get('/login/google/callback', [SocialController::class, 'handleGoogleCallback']);

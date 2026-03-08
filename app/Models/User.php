@@ -6,6 +6,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use App\Models\notifications;
 use Laravel\Sanctum\HasApiTokens;
 
@@ -54,6 +55,39 @@ class User extends Authenticatable
         ];
     }
 
+    public static function rules()
+    {
+        return [
+            'name'          => ['required', 'string', 'max:255'],
+            'email'         => ['required', 'email', 'unique:users,email'],
+            'password'      => ['nullable', 'same:confirm_password'],
+            'role'          => ['required', 'in:admin,patient,doctor'],
+            'mobile_number' => ['required', 'string', 'max:20'],
+            'birthdate'     => ['nullable', 'date'],
+            'latitude'      => ['nullable', 'required', 'numeric'],
+            'longitude'     => ['nullable', 'required', 'numeric'],
+        ];
+    public function doctor()
+    {
+        return $this->hasOne(Doctor::class);
+    }
+
+    public function messages()
+    {
+        return $this->hasMany(Message::class, 'sender_id');
+    }
+
+    public function patient(): HasOne
+    {
+        return $this->hasOne(patient::class);
+    }
+
+    public function chats()
+    {
+        return $this->belongsToMany(Chat::class, 'chat_user')
+            ->withPivot('is_favorite', 'last_read_at')
+            ->withTimestamps();
+    }
     /**
      * Notifications Relationships
      */
