@@ -31,6 +31,7 @@ class Doctor extends Model
     public function chats()
     {
         return $this->hasMany(Chat::class, 'doctor_id');
+    }
     public function clinic(): BelongsTo
     {
         return $this->belongsTo(clinic::class);
