@@ -25,11 +25,11 @@ class Patient extends Model
 
     public function favorites(): HasMany
     {
-        return $this->hasMany(favorite::class);
+        return $this->hasMany(Favorite::class);
     }
 
     public function favoriteDoctors(): BelongsToMany
     {
-        return $this->belongsToMany(doctor::class, 'favorites');
+        return $this->belongsToMany(Doctor::class, 'favorites');
     }
 }

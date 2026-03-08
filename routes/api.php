@@ -29,7 +29,6 @@ Route::middleware('auth:sanctum')->group(function () {
 });
 
 Route::middleware(['auth:sanctum', 'throttle:api'])->group(function () {
-    Route::apiResource('doctors', DoctorController::class);
     // Specific chat routes must come BEFORE apiResource
     Route::get('/chats/favorites', [ChatController::class, 'allFavoriteChats']);
     Route::post('/chats/{chat}/favorite', [ChatController::class, 'toggleFavorite']);

@@ -2,14 +2,14 @@
 
 namespace App\Repositories;
 
-use App\Models\doctor;
+use App\Models\Doctor;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
 class DoctorRepository
 {
-    public function findDetails(int $doctorId, ?int $patientId = null): ?doctor
+    public function findDetails(int $doctorId, ?int $patientId = null): ?Doctor
     {
-        $query = doctor::query()
+        $query = Doctor::query()
             ->with([
                 'user',
                 'specialization',
@@ -32,7 +32,7 @@ class DoctorRepository
 
     public function getNearby(?float $lat, ?float $lng, ?int $patientId = null, int $perPage = 10): LengthAwarePaginator
     {
-        $query = doctor::query()
+        $query = Doctor::query()
             ->with([
                 'specialization',
                 'clinic',
@@ -69,7 +69,7 @@ class DoctorRepository
 
     public function addFavorite(int $doctorId, int $patientId): void
     {
-        \App\Models\favorite::firstOrCreate([
+        \App\Models\Favorite::firstOrCreate([
             'patient_id' => $patientId,
             'doctor_id' => $doctorId,
         ]);
@@ -77,7 +77,7 @@ class DoctorRepository
 
     public function removeFavorite(int $doctorId, int $patientId): void
     {
-        \App\Models\favorite::where('patient_id', $patientId)
+        \App\Models\Favorite::where('patient_id', $patientId)
             ->where('doctor_id', $doctorId)
             ->delete();
     }

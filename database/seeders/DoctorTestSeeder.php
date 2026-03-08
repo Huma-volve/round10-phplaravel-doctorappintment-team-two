@@ -2,13 +2,13 @@
 
 namespace Database\Seeders;
 
-use App\Models\appointment;
-use App\Models\clinic;
-use App\Models\doctor;
-use App\Models\favorite;
-use App\Models\patient;
-use App\Models\review;
-use App\Models\specialization;
+use App\Models\Appointment;
+use App\Models\Clinic;
+use App\Models\Doctor;
+use App\Models\Favorite;
+use App\Models\Patient;
+use App\Models\Review;
+use App\Models\Specialization;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Database\Seeder;
@@ -19,11 +19,11 @@ class DoctorTestSeeder extends Seeder
     public function run(): void
     {
         // Specializations
-        $cardiology = specialization::create(['name' => 'Cardiology']);
-        $dermatology = specialization::create(['name' => 'Dermatology']);
+        $cardiology = Specialization::create(['name' => 'Cardiology']);
+        $dermatology = Specialization::create(['name' => 'Dermatology']);
 
         // Clinics around a fixed point (latitude/longitude roughly in the same city)
-        $clinicA = clinic::create([
+        $clinicA = Clinic::create([
             'name_clinic' => 'Central Clinic',
             'phone' => '+201000000001',
             'address' => 'Downtown',
@@ -31,7 +31,7 @@ class DoctorTestSeeder extends Seeder
             'longitude' => 31.2357,
         ]);
 
-        $clinicB = clinic::create([
+        $clinicB = Clinic::create([
             'name_clinic' => 'North Clinic',
             'phone' => '+201000000002',
             'address' => 'North District',
@@ -71,12 +71,12 @@ class DoctorTestSeeder extends Seeder
             'longitude' => 31.2357,
         ]);
 
-        $patient = patient::create([
+        $patient = Patient::create([
             'user_id' => $patientUser->id,
         ]);
 
         // Doctors
-        $doctor1 = doctor::create([
+        $doctor1 = Doctor::create([
             'user_id' => $doctorUser1->id,
             'clinic_id' => $clinicA->id,
             'specialization_id' => $cardiology->id,
@@ -86,7 +86,7 @@ class DoctorTestSeeder extends Seeder
             'session_price' => 500.0,
         ]);
 
-        $doctor2 = doctor::create([
+        $doctor2 = Doctor::create([
             'user_id' => $doctorUser2->id,
             'clinic_id' => $clinicB->id,
             'specialization_id' => $dermatology->id,
@@ -97,19 +97,19 @@ class DoctorTestSeeder extends Seeder
         ]);
 
         // Appointments (required by reviews FK)
-        $appointment1 = appointment::create([
+        $appointment1 = Appointment::create([
             'doctor_id' => $doctor1->id,
             'patient_id' => $patient->id,
             'appointment_time' => Carbon::now()->subDays(10),
             'Status' => 'completed',
         ]);
-        $appointment2 = appointment::create([
+        $appointment2 = Appointment::create([
             'doctor_id' => $doctor1->id,
             'patient_id' => $patient->id,
             'appointment_time' => Carbon::now()->subDays(5),
             'Status' => 'completed',
         ]);
-        $appointment3 = appointment::create([
+        $appointment3 = Appointment::create([
             'doctor_id' => $doctor2->id,
             'patient_id' => $patient->id,
             'appointment_time' => Carbon::now()->subDays(3),
@@ -117,7 +117,7 @@ class DoctorTestSeeder extends Seeder
         ]);
 
         // Reviews (different ratings to test averages and ordering)
-        review::create([
+        Review::create([
             'patient_id' => $patient->id,
             'doctor_id' => $doctor1->id,
             'appointment_id' => $appointment1->id,
@@ -125,7 +125,7 @@ class DoctorTestSeeder extends Seeder
             'comment' => 'Excellent doctor, very helpful.',
         ]);
 
-        review::create([
+        Review::create([
             'patient_id' => $patient->id,
             'doctor_id' => $doctor1->id,
             'appointment_id' => $appointment2->id,
@@ -133,7 +133,7 @@ class DoctorTestSeeder extends Seeder
             'comment' => 'Good experience overall.',
         ]);
 
-        review::create([
+        Review::create([
             'patient_id' => $patient->id,
             'doctor_id' => $doctor2->id,
             'appointment_id' => $appointment3->id,
@@ -142,7 +142,7 @@ class DoctorTestSeeder extends Seeder
         ]);
 
         // Favorites
-        favorite::create([
+        Favorite::create([
             'patient_id' => $patient->id,
             'doctor_id' => $doctor1->id,
         ]);

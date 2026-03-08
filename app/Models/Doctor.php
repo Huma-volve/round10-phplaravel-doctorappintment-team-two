@@ -34,26 +34,26 @@ class Doctor extends Model
     }
     public function clinic(): BelongsTo
     {
-        return $this->belongsTo(clinic::class);
+        return $this->belongsTo(Clinic::class);
     }
 
     public function specialization(): BelongsTo
     {
-        return $this->belongsTo(specialization::class);
+        return $this->belongsTo(Specialization::class);
     }
 
     public function reviews(): HasMany
     {
-        return $this->hasMany(review::class);
+        return $this->hasMany(Review::class);
     }
 
     public function favorites(): HasMany
     {
-        return $this->hasMany(favorite::class);
+        return $this->hasMany(Favorite::class);
     }
 
     public function availabilitySlots(): HasMany
     {
-        return $this->hasMany(availability_slot::class);
+        return $this->hasMany(AvailabilitySlot::class);
     }
 }
