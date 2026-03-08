@@ -6,8 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\DoctorDetailsRequest;
 use App\Http\Resources\DoctorDetailsResource;
 use App\Http\Resources\DoctorSummaryResource;
-use App\Models\doctor;
-use App\Models\patient;
+use App\Models\Doctor;
+use App\Models\Patient;
 use App\Services\DoctorService;
 use App\Support\ApiResponse;
 use Illuminate\Http\Request;
@@ -21,7 +21,7 @@ class DoctorController extends Controller
     ) {
     }
 
-    public function show(doctor $doctor, DoctorDetailsRequest $request): JsonResponse
+    public function show(Doctor $doctor, DoctorDetailsRequest $request): JsonResponse
     {
         $patient = $this->currentPatient();
 
@@ -52,7 +52,7 @@ class DoctorController extends Controller
         );
     }
 
-    public function favorite(doctor $doctor, Request $request): JsonResponse
+    public function favorite(Doctor $doctor, Request $request): JsonResponse
     {
         $patient = $this->requiredPatient($request);
 
@@ -64,7 +64,7 @@ class DoctorController extends Controller
         );
     }
 
-    public function unfavorite(doctor $doctor, Request $request): JsonResponse
+    public function unfavorite(Doctor $doctor, Request $request): JsonResponse
     {
         $patient = $this->requiredPatient($request);
 
@@ -76,7 +76,7 @@ class DoctorController extends Controller
         );
     }
 
-    protected function currentPatient(): ?patient
+    protected function currentPatient(): ?Patient
     {
         $user = Auth::user();
 
@@ -87,7 +87,7 @@ class DoctorController extends Controller
         return $user->patient;
     }
 
-    protected function requiredPatient(Request $request): patient
+    protected function requiredPatient(Request $request): Patient
     {
         $user = $request->user();
 
