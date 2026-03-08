@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Relations\HasOne;
-use App\Models\notifications;
+use App\Models\Notifications;
 
 class User extends Authenticatable
 {
@@ -66,6 +66,8 @@ class User extends Authenticatable
             'latitude'      => ['nullable', 'required', 'numeric'],
             'longitude'     => ['nullable', 'required', 'numeric'],
         ];
+    }
+
     public function doctor()
     {
         return $this->hasOne(Doctor::class);
@@ -78,7 +80,7 @@ class User extends Authenticatable
 
     public function patient(): HasOne
     {
-        return $this->hasOne(patient::class);
+        return $this->hasOne(Patient::class);
     }
 
     public function chats()
@@ -92,7 +94,7 @@ class User extends Authenticatable
      */
     public function notifications()
     {
-        return $this->hasMany(notifications::class)
+        return $this->hasMany(Notifications::class)
             ->orderBy('created_at', 'desc');
     }
 
