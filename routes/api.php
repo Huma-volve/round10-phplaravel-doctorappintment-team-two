@@ -1,17 +1,21 @@
 <?php
-
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\ChatController;
 use App\Http\Controllers\MessageController;
 use App\Models\Notification;
 use App\Models\User;
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\DoctorController;
 use App\Http\Controllers\API\Favoritecontroller;
 use App\Http\Controllers\API\SearchController;
 
+Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
+    return $request->user();
+});
+require __DIR__.'/auth.php';
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
@@ -26,6 +30,8 @@ Route::get('/doctors/{doctor}', [DoctorController::class, 'show']);
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('/doctors/{doctor}/favorite', [DoctorController::class, 'favorite']);
     Route::delete('/doctors/{doctor}/favorite', [DoctorController::class, 'unfavorite']);
+     Route::get('/favorites', [Favoritecontroller::class, 'index']);
+    Route::post('/favorites_store', [Favoritecontroller::class, 'store']);
 });
 
 Route::middleware(['auth:sanctum', 'throttle:api'])->group(function () {
@@ -77,5 +83,4 @@ Route::get('test', function () {
 });
 
 
-   Route::get('/favorites', [Favoritecontroller::class, 'index']);
-    Route::post('/favorites_store', [Favoritecontroller::class, 'store']);
+  
