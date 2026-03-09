@@ -27,6 +27,13 @@ Route::get('/doctors/{doctor}', [DoctorController::class, 'show']);
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('/doctors/{doctor}/favorite', [DoctorController::class, 'favorite']);
     Route::delete('/doctors/{doctor}/favorite', [DoctorController::class, 'unfavorite']);
+    
+    Route::get('/favorites', [Favoritecontroller::class, 'index']);
+    Route::post('/favorites_store', [Favoritecontroller::class, 'store']);
+
+    Route::get('/stripe/checkout/{appointment_id}', [StripepayController::class, 'checkout']);
+    Route::get('/payment/success/{appointment_id}', [StripepayController::class, 'success']);
+    Route::get('/payment/cancel/{appointment_id}', [StripepayController::class, 'cancel']);
 });
 
 Route::middleware(['auth:sanctum', 'throttle:api'])->group(function () {
@@ -78,12 +85,4 @@ Route::get('test', function () {
 });
 
 
-   Route::get('/favorites', [Favoritecontroller::class, 'index']);
-    Route::post('/favorites_store', [Favoritecontroller::class, 'store']);
 
-
- Route::get('/stripe/checkout/{appointment_id}',[StripepayController::class,'checkout']);
-
-Route::get('/payment/success/{appointment_id}',[StripepayController::class,'success']);
-
-Route::get('/payment/cancel/{appointment_id}',[StripepayController::class,'cancel']);
