@@ -6,9 +6,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class Patient extends Model
 {
-<<<<<<< HEAD
-    //
-=======
     /**
      * The attributes that are mass assignable.
      *
@@ -32,5 +29,4 @@ class Patient extends Model
     {
         return $this->belongsToMany(Doctor::class, 'favorites');
     }
->>>>>>> 09621b2ad9c9f16f2bd78156f87a0655c864e7b3
 }

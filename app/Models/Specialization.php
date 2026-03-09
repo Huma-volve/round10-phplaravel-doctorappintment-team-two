@@ -6,9 +6,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class Specialization extends Model
 {
-<<<<<<< HEAD:app/Models/appointment.php
-    //
-=======
     /**
      * The table associated with the model.
      *
@@ -23,5 +20,4 @@ class Specialization extends Model
     protected $fillable = [
         'name',
     ];
->>>>>>> 09621b2ad9c9f16f2bd78156f87a0655c864e7b3:app/Models/Specialization.php
 }
