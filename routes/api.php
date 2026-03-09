@@ -2,10 +2,9 @@
 
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ReviewController;
-
 use App\Http\Controllers\ChatController;
 use App\Http\Controllers\MessageController;
-use App\Models\Notifications;
+use App\Models\Notification;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -72,7 +71,7 @@ Route::prefix('users')->group(function () {
 });
 Route::get('test', function () {
     $user = User::find(1);
-    $notification = Notifications::first();
+    $notification = Notification::first();
     $user->notify(new \App\Notifications\BroadcastNotification('Test Notification', 'This is a test notification'));
     event(new \App\Events\NotificationBroadcastEvent($user->id, $notification));
     return response()->json(['message' => 'API is working']);
