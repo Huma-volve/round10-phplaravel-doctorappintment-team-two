@@ -6,6 +6,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class SearchHistory extends Model
 {
-    protected $table = 'search_histories';
+    protected $table='search_histories';
     protected $guarded = [];
 }

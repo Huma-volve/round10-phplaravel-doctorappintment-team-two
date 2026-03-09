@@ -2,16 +2,15 @@
 
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ReviewController;
-
 use App\Http\Controllers\ChatController;
 use App\Http\Controllers\MessageController;
-use App\Models\Notifications;
+use App\Models\Notification;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\DoctorController;
-use App\Http\Controllers\API\SearchController;
 use App\Http\Controllers\API\Favoritecontroller;
+use App\Http\Controllers\API\SearchController;
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
@@ -71,12 +70,12 @@ Route::prefix('users')->group(function () {
 });
 Route::get('test', function () {
     $user = User::find(1);
-    $notification = Notifications::first();
+    $notification = Notification::first();
     $user->notify(new \App\Notifications\BroadcastNotification('Test Notification', 'This is a test notification'));
     event(new \App\Events\NotificationBroadcastEvent($user->id, $notification));
     return response()->json(['message' => 'API is working']);
 });
 
 
-Route::get('/favorites', [Favoritecontroller::class, 'index']);
-Route::post('/favorites_store', [Favoritecontroller::class, 'store']);
+   Route::get('/favorites', [Favoritecontroller::class, 'index']);
+    Route::post('/favorites_store', [Favoritecontroller::class, 'store']);
