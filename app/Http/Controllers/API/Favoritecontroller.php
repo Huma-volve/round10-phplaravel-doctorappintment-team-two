@@ -5,14 +5,14 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Favorite;
-use App\Http\Resources\Api\FavoriteResource;
+use App\Http\Resources\Api\FavoritedoctorResource;
 use Illuminate\Support\Facades\Auth;
 
 class Favoritecontroller extends Controller
 {
     public function index()
     {
-        $favorites =FavoriteResource::collection(Favorite::all());
+        $favorites =FavoritedoctorResource::collection(Favorite::all());
 
         return response()->json([
             'status' => true,

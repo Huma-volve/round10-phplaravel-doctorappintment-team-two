@@ -7,8 +7,12 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+<<<<<<< HEAD
 use App\Models\notifications;
 use Laravel\Sanctum\HasApiTokens;
+=======
+use App\Models\Notifications;
+>>>>>>> 09621b2ad9c9f16f2bd78156f87a0655c864e7b3
 
 class User extends Authenticatable
 {
@@ -67,6 +71,8 @@ class User extends Authenticatable
             'latitude'      => ['nullable', 'required', 'numeric'],
             'longitude'     => ['nullable', 'required', 'numeric'],
         ];
+    }
+
     public function doctor()
     {
         return $this->hasOne(Doctor::class);
@@ -79,7 +85,7 @@ class User extends Authenticatable
 
     public function patient(): HasOne
     {
-        return $this->hasOne(patient::class);
+        return $this->hasOne(Patient::class);
     }
 
     public function chats()
@@ -93,7 +99,7 @@ class User extends Authenticatable
      */
     public function notifications()
     {
-        return $this->hasMany(notifications::class)
+        return $this->hasMany(Notifications::class)
             ->orderBy('created_at', 'desc');
     }
 

@@ -6,18 +6,35 @@ use Illuminate\Database\Eloquent\Model;
 
 class Review extends Model
 {
-    protected $fillable = ['patient_id', 'doctor_id', 'appointment_id', 'rating', 'comment'];
+    /**
+     * The table associated with the model.
+     *
+     * @var string
+     */
+    protected $table = 'reviews';
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array<int, string>
+     */
+    protected $fillable = [
+        'patient_id',
+        'doctor_id',
+        'appointment_id',
+        'rating',
+        'comment',  
+    ];
 
-    public function doctor()
+    public function doctor(): BelongsTo
     {
         return $this->belongsTo(Doctor::class, 'doctor_id');
     }
-    public function patient()
+    public function patient(): BelongsTo
     {
         return $this->belongsTo(Patient::class, 'patient_id');
     }
 
-    public function appointment()
+    public function appointment(): BelongsTo    
     {
         return $this->belongsTo(Appointment::class, 'appointment_id');
     }
@@ -57,8 +74,6 @@ class Review extends Model
                 'max:255',
 
             ],
-
-
         ];
     }
 }

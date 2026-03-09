@@ -1,10 +1,13 @@
 <?php
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 
 
 
+=======
+>>>>>>> 09621b2ad9c9f16f2bd78156f87a0655c864e7b3
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ReviewController;
 
@@ -16,6 +19,8 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\DoctorController;
+use App\Http\Controllers\API\Favoritecontroller;
+use App\Http\Controllers\API\SearchController;
 
 <<<<<<< HEAD
 Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
@@ -29,6 +34,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 // Public doctor endpoints
 Route::get('/doctors/nearby', [DoctorController::class, 'nearby']);
+Route::get('/doctors/search', [SearchController::class, 'search']);
+
 Route::get('/doctors/{doctor}', [DoctorController::class, 'show']);
 
 // Authenticated favorites endpoints
@@ -38,7 +45,6 @@ Route::middleware('auth:sanctum')->group(function () {
 });
 
 Route::middleware(['auth:sanctum', 'throttle:api'])->group(function () {
-    Route::apiResource('doctors', DoctorController::class);
     // Specific chat routes must come BEFORE apiResource
     Route::get('/chats/favorites', [ChatController::class, 'allFavoriteChats']);
     Route::post('/chats/{chat}/favorite', [ChatController::class, 'toggleFavorite']);
@@ -85,4 +91,11 @@ Route::get('test', function () {
     event(new \App\Events\NotificationBroadcastEvent($user->id, $notification));
     return response()->json(['message' => 'API is working']);
 });
+<<<<<<< HEAD
 >>>>>>> 32c2a88b5aca975f07622258ac45cda84ddc6fcd
+=======
+
+
+   Route::get('/favorites', [Favoritecontroller::class, 'index']);
+    Route::post('/favorites_store', [Favoritecontroller::class, 'store']);
+>>>>>>> 09621b2ad9c9f16f2bd78156f87a0655c864e7b3
