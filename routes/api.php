@@ -1,8 +1,5 @@
 <?php
 
-
-
-
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ReviewController;
 
@@ -13,6 +10,8 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\DoctorController;
+use App\Http\Controllers\API\Favoritecontroller;
+use App\Http\Controllers\API\SearchController;
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
@@ -20,6 +19,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 // Public doctor endpoints
 Route::get('/doctors/nearby', [DoctorController::class, 'nearby']);
+Route::get('/doctors/search', [SearchController::class, 'search']);
+
 Route::get('/doctors/{doctor}', [DoctorController::class, 'show']);
 
 // Authenticated favorites endpoints
@@ -75,3 +76,7 @@ Route::get('test', function () {
     event(new \App\Events\NotificationBroadcastEvent($user->id, $notification));
     return response()->json(['message' => 'API is working']);
 });
+
+
+   Route::get('/favorites', [Favoritecontroller::class, 'index']);
+    Route::post('/favorites_store', [Favoritecontroller::class, 'store']);
