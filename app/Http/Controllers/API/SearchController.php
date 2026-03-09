@@ -4,8 +4,8 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\doctor;
-use App\Models\search_histories;
+use App\Models\Doctor;
+use App\Models\SearchHistory;
 use Illuminate\Support\Facades\Auth;
 
 class SearchController extends Controller
@@ -21,7 +21,7 @@ class SearchController extends Controller
             });
             // حفظ سجل البحث (فقط إذا كان المستخدم مسجلاً دخولاً)
             if (Auth::check()) {
-                search_histories::create([
+                SearchHistory::create([
                     'patient_id' => Auth::id(),
                     'keyword' => $request->name
                 ]);
