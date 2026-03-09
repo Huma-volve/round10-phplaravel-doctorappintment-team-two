@@ -1,13 +1,6 @@
 <?php
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
 
-
-
-=======
->>>>>>> 09621b2ad9c9f16f2bd78156f87a0655c864e7b3
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ReviewController;
 
@@ -15,19 +8,17 @@ use App\Http\Controllers\ChatController;
 use App\Http\Controllers\MessageController;
 use App\Models\Notifications;
 use App\Models\User;
->>>>>>> 32c2a88b5aca975f07622258ac45cda84ddc6fcd
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\DoctorController;
 use App\Http\Controllers\API\Favoritecontroller;
 use App\Http\Controllers\API\SearchController;
 
-<<<<<<< HEAD
 Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
     return $request->user();
 });
 require __DIR__.'/auth.php';
-=======
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
@@ -42,6 +33,8 @@ Route::get('/doctors/{doctor}', [DoctorController::class, 'show']);
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('/doctors/{doctor}/favorite', [DoctorController::class, 'favorite']);
     Route::delete('/doctors/{doctor}/favorite', [DoctorController::class, 'unfavorite']);
+     Route::get('/favorites', [Favoritecontroller::class, 'index']);
+    Route::post('/favorites_store', [Favoritecontroller::class, 'store']);
 });
 
 Route::middleware(['auth:sanctum', 'throttle:api'])->group(function () {
@@ -91,11 +84,6 @@ Route::get('test', function () {
     event(new \App\Events\NotificationBroadcastEvent($user->id, $notification));
     return response()->json(['message' => 'API is working']);
 });
-<<<<<<< HEAD
->>>>>>> 32c2a88b5aca975f07622258ac45cda84ddc6fcd
-=======
 
 
-   Route::get('/favorites', [Favoritecontroller::class, 'index']);
-    Route::post('/favorites_store', [Favoritecontroller::class, 'store']);
->>>>>>> 09621b2ad9c9f16f2bd78156f87a0655c864e7b3
+  
