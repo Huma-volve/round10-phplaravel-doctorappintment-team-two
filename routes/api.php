@@ -1,4 +1,5 @@
 <?php
+
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\ChatController;
@@ -29,8 +30,16 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/doctors/{doctor}/favorite', [DoctorController::class, 'favorite']);
     Route::delete('/doctors/{doctor}/favorite', [DoctorController::class, 'unfavorite']);
 
-     Route::get('/favorites', [FavoriteController::class, 'index']);
+    
+    Route::get('/favorites', [FavoriteController::class, 'index']);
     Route::post('/favorites_store', [FavoriteController::class, 'store']);
+
+
+    Route::get('/stripe/checkout/{appointment_id}', [StripepayController::class, 'checkout']);
+
+    Route::get('/payment/success/{appointment_id}', [StripepayController::class, 'success']);
+
+    Route::get('/payment/cancel/{appointment_id}', [StripepayController::class, 'cancel']);
 });
 
 Route::middleware(['auth:sanctum', 'throttle:api'])->group(function () {
@@ -80,7 +89,4 @@ Route::get('test', function () {
     event(new \App\Events\NotificationBroadcastEvent($user->id, $notification));
     return response()->json(['message' => 'API is working']);
 });
-
-require __DIR__.'/auth.php';
-
-  
+require __DIR__ . '/auth.php';
