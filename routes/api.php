@@ -29,6 +29,8 @@ Route::get('/doctors/{doctor}', [DoctorController::class, 'show']);
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('/doctors/{doctor}/favorite', [DoctorController::class, 'favorite']);
     Route::delete('/doctors/{doctor}/favorite', [DoctorController::class, 'unfavorite']);
+
+    
     Route::get('/favorites', [FavoriteController::class, 'index']);
     Route::post('/favorites_store', [FavoriteController::class, 'store']);
 
