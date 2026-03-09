@@ -4,7 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class search_histories extends Model
+class SearchHistory extends Model
 {
-    //
+    protected $table = 'search_histories';
+    protected $guarded = [];
 }
