@@ -1,6 +1,4 @@
 <?php
-
-
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\ChatController;
@@ -11,7 +9,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\DoctorController;
-use App\Http\Controllers\API\Favoritecontroller;
+use App\Http\Controllers\API\FavoriteController;
 use App\Http\Controllers\API\SearchController;
 use App\Http\Controllers\API\StripepayController;
 
@@ -33,8 +31,8 @@ Route::get('/doctors/{doctor}', [DoctorController::class, 'show']);
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('/doctors/{doctor}/favorite', [DoctorController::class, 'favorite']);
     Route::delete('/doctors/{doctor}/favorite', [DoctorController::class, 'unfavorite']);
-     Route::get('/favorites', [Favoritecontroller::class, 'index']);
-    Route::post('/favorites_store', [Favoritecontroller::class, 'store']);
+     Route::get('/favorites', [FavoriteController::class, 'index']);
+    Route::post('/favorites_store', [FavoriteController::class, 'store']);
 });
 
 Route::middleware(['auth:sanctum', 'throttle:api'])->group(function () {
