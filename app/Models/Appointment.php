@@ -17,4 +17,14 @@ class Appointment extends Model
         'appointment_time',
         'Status',
     ];
+    
+       public function payment()
+    {
+        return $this->hasOne(Payment::class);
+    }
+
+    public function doctor()
+{
+    return $this->belongsTo(Doctor::class);
+}
 }
