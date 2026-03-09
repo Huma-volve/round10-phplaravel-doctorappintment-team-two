@@ -16,10 +16,7 @@ use App\Http\Controllers\API\StripepayController;
 Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
     return $request->user();
 });
-require __DIR__.'/auth.php';
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
+
 
 // Public doctor endpoints
 Route::get('/doctors/nearby', [DoctorController::class, 'nearby']);
@@ -84,5 +81,6 @@ Route::get('test', function () {
     return response()->json(['message' => 'API is working']);
 });
 
+require __DIR__.'/auth.php';
 
   
