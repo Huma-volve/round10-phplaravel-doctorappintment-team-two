@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\Doctor;
+use App\Models\Patient;
 use App\Models\User;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
@@ -21,28 +23,37 @@ class RegisteredUserController extends Controller
     public function store(Request $request): Response
     {
         $request->validate([
-        'name' => ['required','string','max:255'],
-        'email' => ['required','string','email','max:255','unique:users'],
-        'role' => ['required','string','in:patient,doctor,admin'],
-        'mobile_number' => ['required','string','max:20','unique:users,mobile_number'],
-        'birthdate' => ['nullable','date'],
-        'profile_photo' => ['nullable','string'],
-        'latitude' => ['nullable','numeric'],
-        'longitude' => ['nullable','numeric'],
-        'password' => ['required','confirmed','min:8'],
-    ]);
+            'name' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+            'role' => ['required', 'string', 'in:patient,doctor,admin'],
+            'mobile_number' => ['required', 'string', 'max:20', 'unique:users,mobile_number'],
+            'birthdate' => ['nullable', 'date'],
+            'profile_photo' => ['nullable', 'string'],
+            'latitude' => ['nullable', 'numeric'],
+            'longitude' => ['nullable', 'numeric'],
+            'password' => ['required', 'confirmed', 'min:8'],
+        ]);
 
-    $user = User::create([
-        'name' => $request->name,
-        'email' => $request->email,
-        'role' => $request->role,
-        'mobile_number' => $request->mobile_number,
-        'birthdate' => $request->birthdate,
-        'profile_photo' => $request->profile_photo,
-        'latitude' => $request->latitude,
-        'longitude' => $request->longitude,
-        'password' => Hash::make($request->password),
-    ]);
+        $user = User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'role' => $request->role,
+            'mobile_number' => $request->mobile_number,
+            'birthdate' => $request->birthdate,
+            'profile_photo' => $request->profile_photo,
+            'latitude' => $request->latitude,
+            'longitude' => $request->longitude,
+            'password' => Hash::make($request->password),
+        ]);
+        if ($user->role === 'patient') {
+            Patient::create([
+                'user_id' => $user->id
+            ]);
+        } elseif ($user->role === 'doctor') {
+            Doctor::create([
+                'user_id' => $user->id
+            ]);
+        }
         event(new Registered($user));
 
         Auth::login($user);
