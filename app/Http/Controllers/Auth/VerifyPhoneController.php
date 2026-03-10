@@ -49,10 +49,10 @@ class VerifyPhoneController extends Controller
         $user->phone_verified_at = now();
         $user->save();
 
-        $token = $user->createToken('main')->plainTextToken;
+        // $token = $user->createToken('main')->plainTextToken;
 
         return response()->json([
-            'message' => 'Phone verified successfully.',
+            'message' => 'Phone verified successfully, Go to the login page to get your access token.',
             'user' => [
                 'id' => $user->id,
                 'name' => $user->name,
@@ -61,7 +61,7 @@ class VerifyPhoneController extends Controller
                 'mobile_number' => $user->mobile_number,
                 'phone_verified_at' => $user->phone_verified_at?->toIso8601String(),
             ],
-            'token' => $token,
+            // 'token' => $token,
         ]);
     }
 
