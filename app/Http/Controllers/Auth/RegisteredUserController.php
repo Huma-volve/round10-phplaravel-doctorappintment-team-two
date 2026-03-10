@@ -53,7 +53,8 @@ class RegisteredUserController extends Controller
         $this->phoneVerification->sendOtp($user);
 
         return response()->json([
-            'message' => 'Registration successful. Please verify your phone with the OTP sent.',
+            'message' => 'OTP sent to your phone. Enter it in the verify step to get your access token.',
+            'next_step' => 'POST /verify-phone with phone_code, mobile_number, and otp (no token until verified).',
             'user' => [
                 'id' => $user->id,
                 'name' => $user->name,

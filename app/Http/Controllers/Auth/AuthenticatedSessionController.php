@@ -18,6 +18,9 @@ class AuthenticatedSessionController extends Controller
     {
         $request->authenticate();
         $user = $request->user();
+        if (!$user->phone_verified_at) {
+            return response()->json(['message' => 'Please verify your phone with the OTP sent.'], 401);
+        }
         $token = $user->createToken('main')->plainTextToken;
 
         return response()->json([

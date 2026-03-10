@@ -15,18 +15,21 @@ class VerifyPhoneController extends Controller
     ) {}
 
     /**
-     * Verify phone OTP. On success: set phone_verified_at, return token.
+     * Verify phone OTP (sent to the phone). On success: set phone_verified_at, return token.
      */
     public function store(Request $request): JsonResponse
     {
         $request->validate([
-            'email' => ['required', 'email', 'exists:users,email'],
+            'phone_code' => ['required', 'string', 'max:10'],
+            'mobile_number' => ['required', 'string', 'max:20'],
             'otp' => ['required', 'string', 'max:10'],
         ]);
 
-        $user = User::where('email', $request->email)->first();
+        $user = User::where('phone_code', $request->phone_code)
+            ->where('mobile_number', $request->mobile_number)
+            ->first();
         if (! $user) {
-            return response()->json(['message' => 'User not found.'], 404);
+            return response()->json(['message' => 'User not found for this phone number.'], 404);
         }
 
         $result = $this->phoneVerification->verifyOtp($user, $request->otp);
@@ -63,17 +66,20 @@ class VerifyPhoneController extends Controller
     }
 
     /**
-     * Resend OTP for the given email (e.g. after register, before verify).
+     * Resend OTP to the phone (identify user by phone_code + mobile_number).
      */
     public function resend(Request $request): JsonResponse
     {
         $request->validate([
-            'email' => ['required', 'email', 'exists:users,email'],
+            'phone_code' => ['required', 'string', 'max:10'],
+            'mobile_number' => ['required', 'string', 'max:20'],
         ]);
 
-        $user = User::where('email', $request->email)->first();
+        $user = User::where('phone_code', $request->phone_code)
+            ->where('mobile_number', $request->mobile_number)
+            ->first();
         if (! $user) {
-            return response()->json(['message' => 'User not found.'], 404);
+            return response()->json(['message' => 'User not found for this phone number.'], 404);
         }
 
         try {
@@ -86,7 +92,7 @@ class VerifyPhoneController extends Controller
         }
 
         return response()->json([
-            'message' => 'OTP sent again. Please check and verify.',
+            'message' => 'OTP sent to your phone again. Enter it to verify.',
         ]);
     }
 }
