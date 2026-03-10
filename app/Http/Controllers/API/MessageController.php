@@ -11,10 +11,6 @@ use Illuminate\Http\Request;
 
 class MessageController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-
     public function index()
     {
         $messages = Message::with(['sender', 'chat'])
@@ -26,17 +22,12 @@ class MessageController extends Controller
         ], 200);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
+
     public function create()
     {
         //
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
 
@@ -73,33 +64,36 @@ class MessageController extends Controller
         return new MessageResource($message);
     }
 
-    /**
-     * Display the specified resource.
-     */
+
     public function show(string $id)
     {
         //
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
+
     public function edit(string $id)
     {
         //
     }
 
+    /*************  ✨ Windsurf Command 🌟  *************/
     /**
-     * Update the specified resource in storage.
+     * Update a message
+     *
+     * @param \Illuminate\Http\Request $request
+     * @param string $id
+     * @return \Illuminate\Http\Response
      */
+
     public function update(Request $request, string $id)
     {
+        // Update a message with the given ID
+        // TODO: Implement this
         //
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
+
+    /*******  7dbfc0c9-da29-42ec-9ac6-4a15c5fcacd1  *******/
     public function destroy(string $id)
     {
         //
