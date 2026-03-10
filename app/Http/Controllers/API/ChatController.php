@@ -3,14 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Models\Chat;
+use App\Models\Doctor;
+use App\Models\Patient;
 use App\Models\User;
 use Illuminate\Http\Request;
 
 class ChatController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
         //display al chats for the authenticated
@@ -24,26 +23,20 @@ class ChatController extends Controller
         return response()->json($chats);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
         //
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
         $data = $request->validate([
-            'patient_id' => ['required', 'exists:users,id'],
-            'doctor_id' => ['required', 'exists:users,id'],
+            'patient_id' => ['required', 'exists:patients,id'],
+            'doctor_id' => ['required', 'exists:doctors,id'],
         ]);
 
-        $patient = User::findOrFail($data['patient_id']);
-        $doctor  = User::findOrFail($data['doctor_id']);
+        $patient = Patient::findOrFail($data['patient_id']);
+        $doctor  = Doctor::findOrFail($data['doctor_id']);
 
         if ($patient->role !== 'patient') {
             return response()->json([
@@ -81,9 +74,7 @@ class ChatController extends Controller
         ], 201);
     }
 
-    /**
-     * Display the specified resource.
-     */
+
     public function show(string $id)
     {
         $userId = auth()->id();
@@ -99,29 +90,17 @@ class ChatController extends Controller
         return response()->json($chat);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
+
     public function edit(string $id)
     {
         //
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
-    }
+    public function update(Request $request, string $id) {}
+
+
+
     // Mark a chat as read for the authenticated user
     public function markAsRead(Chat $chat)
     {
@@ -178,5 +157,21 @@ class ChatController extends Controller
             ->get();
 
         return response()->json($favoriteChats);
+    }
+    public function destroy(string $id)
+    {
+        $userId = auth()->id();
+        $chat = Chat::where('id', $id)
+            ->where(function ($query) use ($userId) {
+                $query->where('patient_id', $userId)
+                    ->orWhere('doctor_id', $userId);
+            })
+            ->firstOrFail();
+
+        $chat->delete();
+
+        return response()->json([
+            'message' => 'Chat deleted successfully'
+        ]);
     }
 }
