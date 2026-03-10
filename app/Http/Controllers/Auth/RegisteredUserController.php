@@ -4,18 +4,22 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
-use Illuminate\Auth\Events\Registered;
+use App\Services\PhoneVerificationService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
 
 class RegisteredUserController extends Controller
 {
+    public function __construct(
+        private PhoneVerificationService $phoneVerification
+    ) {}
+
     /**
      * Handle an incoming registration request.
+     * Creates user with role=patient, sends OTP for phone verification.
+     * Token is only returned after successful verify-phone.
      *
      * @throws \Illuminate\Validation\ValidationException
      */
@@ -24,40 +28,38 @@ class RegisteredUserController extends Controller
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'role' => ['required', 'string', 'in:patient,doctor,admin'],
+            'password' => ['required', 'confirmed', Rules\Password::defaults()],
+            'phone_code' => ['required', 'string', 'max:10'],
             'mobile_number' => ['required', 'string', 'max:20', 'unique:users,mobile_number'],
             'birthdate' => ['nullable', 'date'],
             'profile_photo' => ['nullable', 'string'],
             'latitude' => ['nullable', 'numeric'],
             'longitude' => ['nullable', 'numeric'],
-            'password' => ['required', 'confirmed', 'min:8'],
         ]);
 
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
-            'role' => $request->role,
+            'password' => Hash::make($request->password),
+            'phone_code' => $request->phone_code,
             'mobile_number' => $request->mobile_number,
+            'role' => 'patient',
             'birthdate' => $request->birthdate,
             'profile_photo' => $request->profile_photo,
             'latitude' => $request->latitude,
             'longitude' => $request->longitude,
-            'password' => Hash::make($request->password),
         ]);
-        
-        // event(new Registered($user));
-// 
-        Auth::login($user);
+
+        $this->phoneVerification->sendOtp($user);
 
         return response()->json([
-            'message' => 'User registered successfully',
+            'message' => 'Registration successful. Please verify your phone with the OTP sent.',
             'user' => [
                 'id' => $user->id,
                 'name' => $user->name,
                 'email' => $user->email,
+                'phone_code' => $user->phone_code,
                 'mobile_number' => $user->mobile_number,
-                'birthdate' => $user->birthdate,
-                'profile_photo' => $user->profile_photo,
             ],
         ], 201);
     }

@@ -46,5 +46,9 @@ return [
         "client_secret"=> env('GOOGLE_SECRET_ID'),
         "redirect"=>"http://127.0.0.1:8000/api/auth/google/callback"
 
-    ]
+    ],
+
+    'phone_otp' => [
+        'code' => env('PHONE_OTP_CODE', '1234'),
+    ],
 ];
