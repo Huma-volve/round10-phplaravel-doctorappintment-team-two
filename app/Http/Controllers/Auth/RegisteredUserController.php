@@ -44,8 +44,9 @@ class RegisteredUserController extends Controller
             'longitude' => $request->longitude,
             'password' => Hash::make($request->password),
         ]);
-        event(new Registered($user));
-
+        dd($user,$request->all());
+        // event(new Registered($user));
+// 
         Auth::login($user);
 
         return response()->json([
