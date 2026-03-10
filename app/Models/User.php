@@ -7,12 +7,13 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Relations\HasOne;
-use App\Models\Notifications;
+use Laravel\Sanctum\HasApiTokens;
+use App\Models\Notification;
 
 class User extends Authenticatable
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, Notifiable,HasApiTokens;
+    use HasFactory, Notifiable, HasApiTokens;
 
     /**
      * The attributes that are mass assignable.
@@ -94,7 +95,7 @@ class User extends Authenticatable
      */
     public function notifications()
     {
-        return $this->hasMany(Notifications::class)
+        return $this->hasMany(Notification::class)
             ->orderBy('created_at', 'desc');
     }
 
