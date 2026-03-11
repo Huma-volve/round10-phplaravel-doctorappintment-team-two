@@ -1,16 +1,15 @@
 <?php
 
+use App\Http\Controllers\API\ChatController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ReviewController;
-use App\Http\Controllers\ChatController;
-use App\Http\Controllers\MessageController;
 use App\Models\Notification;
 use App\Models\User;
-
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\DoctorController;
 use App\Http\Controllers\API\FavoriteController;
+use App\Http\Controllers\API\MessageController;
 use App\Http\Controllers\API\SearchController;
 use App\Http\Controllers\API\StripepayController;
 use App\Http\Controllers\API\AppointmentController;

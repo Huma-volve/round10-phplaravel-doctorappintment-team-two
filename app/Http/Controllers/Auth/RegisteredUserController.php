@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\Doctor;
+use App\Models\Patient;
 use App\Models\User;
 use App\Services\PhoneVerificationService;
 use Illuminate\Http\JsonResponse;
@@ -28,7 +30,8 @@ class RegisteredUserController extends Controller
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'password' => ['required', 'confirmed', Rules\Password::defaults()],
+            'role' => ['required', 'string', 'in:patient,doctor,admin'],
+            'password' => ['required', 'confirmed','min:8', Rules\Password::defaults()],
             'phone_code' => ['required', 'string', 'max:10'],
             'mobile_number' => ['required', 'string', 'max:20', 'unique:users,mobile_number'],
             'birthdate' => ['nullable', 'date'],
@@ -40,6 +43,8 @@ class RegisteredUserController extends Controller
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
+            'role' => $request->role,
+            'mobile_number' => $request->mobile_number,
             'password' => Hash::make($request->password),
             'phone_code' => $request->phone_code,
             'mobile_number' => $request->mobile_number,
@@ -48,7 +53,18 @@ class RegisteredUserController extends Controller
             'profile_photo' => $request->profile_photo,
             'latitude' => $request->latitude,
             'longitude' => $request->longitude,
+            'password' => Hash::make($request->password),
         ]);
+        if ($user->role === 'patient') {
+            Patient::create([
+                'user_id' => $user->id
+            ]);
+        } elseif ($user->role === 'doctor') {
+            Doctor::create([
+                'user_id' => $user->id
+            ]);
+        }
+        event(new Registered($user));
 
         $this->phoneVerification->sendOtp($user);
 
