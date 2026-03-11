@@ -239,7 +239,6 @@
 
 <div class="chat-footer">
     <div class="chat-actions-left">
-        <i class="fa fa-plus"></i>
         <label for="imgUpload" class="mb-0"><i class="fa fa-image"></i></label>
         <input type="file" id="imgUpload" class="d-none" accept="image/*" onchange="uploadFile('image')">
         
