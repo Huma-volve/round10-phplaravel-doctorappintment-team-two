@@ -31,7 +31,7 @@ class RegisteredUserController extends Controller
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'role' => ['required', 'string', 'in:patient,doctor,admin'],
-            'password' => ['required', 'confirmed','min:8', Rules\Password::defaults()],
+            'password' => ['required', 'confirmed', Rules\Password::defaults(),'min:8'],
             'phone_code' => ['required', 'string', 'max:10'],
             'mobile_number' => ['required', 'string', 'max:20', 'unique:users,mobile_number'],
             'birthdate' => ['nullable', 'date'],
@@ -47,13 +47,10 @@ class RegisteredUserController extends Controller
             'mobile_number' => $request->mobile_number,
             'password' => Hash::make($request->password),
             'phone_code' => $request->phone_code,
-            'mobile_number' => $request->mobile_number,
-            'role' => 'patient',
             'birthdate' => $request->birthdate,
             'profile_photo' => $request->profile_photo,
             'latitude' => $request->latitude,
             'longitude' => $request->longitude,
-            'password' => Hash::make($request->password),
         ]);
         if ($user->role === 'patient') {
             Patient::create([
@@ -65,7 +62,6 @@ class RegisteredUserController extends Controller
             ]);
         }
         event(new Registered($user));
-
         $this->phoneVerification->sendOtp($user);
 
         return response()->json([

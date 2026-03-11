@@ -34,7 +34,7 @@ class VerifyPhoneController extends Controller
 
         $result = $this->phoneVerification->verifyOtp($user, $request->otp);
 
-        if (! $result['success']) {
+        if (!$result['success']) {
             $status = 422;
             if (isset($result['locked_until'])) {
                 $status = 429;
