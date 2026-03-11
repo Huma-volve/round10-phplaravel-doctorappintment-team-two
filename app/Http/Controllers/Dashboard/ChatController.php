@@ -9,6 +9,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class ChatController extends Controller
 {
@@ -231,7 +232,7 @@ class ChatController extends Controller
             return response()->json(['error' => 'Unauthorized'], 403);
         }
 
-        $chatUser = \DB::table('chat_user')
+        $chatUser = DB::table('chat_user')
             ->where('chat_id', $chat->id)
             ->where('user_id', $user->id)
             ->first();
