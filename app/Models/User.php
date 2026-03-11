@@ -8,8 +8,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Relations\HasOne;
-use Illuminate\Auth\Notifications\ResetPassword as ResetPasswordNotification;
 use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Auth\Notifications\ResetPassword as ResetPasswordNotification;
 use App\Models\Notification;
 
 class User extends Authenticatable implements CanResetPassword

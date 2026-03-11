@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\Admin\FaqController;
+use App\Http\Controllers\Admin\PolicyController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -87,3 +89,18 @@ use App\Http\Controllers\Dashboard\ChatController;
     Route::delete('/dashboard/message/{message}', [ChatController::class, 'destroyMessage'])->name('chat.message.destroy');
     Route::post('/dashboard/chats/{chat}/favorite', [ChatController::class, 'toggleFavorite'])->name('chat.favorite.toggle');
 // });
+Route::prefix('admin')->group(function () {
+
+    Route::get('/', [FaqController::class, 'index'])->name('faqs.index');
+    Route::get('/faqs', [FaqController::class, 'create'])->name('faqs.create');
+
+    Route::post('/faqs', [FaqController::class, 'store'])->name('faqs.store');
+
+    Route::delete('/faqs/{id}', [FaqController::class, 'destroy'])->name('faqs.destroy');
+
+
+    Route::get('/policies', [PolicyController::class, 'index'])->name('policies.index');
+    Route::get('/policies/create', [PolicyController::class, 'create'])->name('policies.create');
+    Route::post('/policies', [PolicyController::class, 'store'])->name('policies.store');
+    Route::delete('/policies/{id}', [PolicyController::class, 'destroy'])->name('policies.destroy');
+});

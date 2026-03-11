@@ -47,13 +47,10 @@ class RegisteredUserController extends Controller
             'mobile_number' => $request->mobile_number,
             'password' => Hash::make($request->password),
             'phone_code' => $request->phone_code,
-            'mobile_number' => $request->mobile_number,
-            'role' => 'patient',
             'birthdate' => $request->birthdate,
             'profile_photo' => $request->profile_photo,
             'latitude' => $request->latitude,
             'longitude' => $request->longitude,
-            'password' => Hash::make($request->password),
         ]);
         if ($user->role === 'patient') {
             Patient::create([
