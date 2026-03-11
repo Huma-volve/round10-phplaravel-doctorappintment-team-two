@@ -12,6 +12,7 @@ use App\Http\Controllers\API\FavoriteController;
 use App\Http\Controllers\API\MessageController;
 use App\Http\Controllers\API\SearchController;
 use App\Http\Controllers\API\StripepayController;
+use App\Http\Controllers\API\AppointmentController;
 
 Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
     return $request->user();
@@ -39,6 +40,17 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/payment/success/{appointment_id}', [StripepayController::class, 'success']);
 
     Route::get('/payment/cancel/{appointment_id}', [StripepayController::class, 'cancel']);
+
+
+    Route::get('/appointments', [AppointmentController::class, 'index']);
+
+    Route::post('/appointments', [AppointmentController::class, 'store']);
+
+    Route::post('/appointments/{id}/confirm', [AppointmentController::class, 'confirm']);
+
+    Route::post('/appointments/{id}/cancel', [AppointmentController::class, 'cancel']);
+
+    Route::post('/appointments/{id}/reschedule', [AppointmentController::class, 'reschedule']);
 });
 
 Route::middleware(['auth:sanctum'])->group(function () {

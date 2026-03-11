@@ -18,57 +18,65 @@ class DoctorTestSeeder extends Seeder
 {
     public function run(): void
     {
-        // Specializations
-        $cardiology = Specialization::create(['name' => 'Cardiology']);
-        $dermatology = Specialization::create(['name' => 'Dermatology']);
+        $faker = fake();
 
-        // Clinics around a fixed point (latitude/longitude roughly in the same city)
+        // Specializations (firstOrCreate to avoid duplicates when re-seeding)
+        $cardiology = Specialization::firstOrCreate(
+            ['name' => 'Cardiology'],
+            ['name' => 'Cardiology']
+        );
+        $dermatology = Specialization::firstOrCreate(
+            ['name' => 'Dermatology'],
+            ['name' => 'Dermatology']
+        );
+
+        // Clinics with random data
         $clinicA = Clinic::create([
-            'name_clinic' => 'Central Clinic',
-            'phone' => '+201000000001',
-            'address' => 'Downtown',
-            'latitude' => 30.0444,
-            'longitude' => 31.2357,
+            'name_clinic' => $faker->company() . ' Clinic',
+            'phone' => $faker->numerify('+20##########'),
+            'address' => $faker->streetAddress(),
+            'latitude' => $faker->latitude(30.0, 30.1),
+            'longitude' => $faker->longitude(31.2, 31.3),
         ]);
 
         $clinicB = Clinic::create([
-            'name_clinic' => 'North Clinic',
-            'phone' => '+201000000002',
-            'address' => 'North District',
-            'latitude' => 30.0644,
-            'longitude' => 31.2357,
+            'name_clinic' => $faker->company() . ' Clinic',
+            'phone' => $faker->numerify('+20##########'),
+            'address' => $faker->streetAddress(),
+            'latitude' => $faker->latitude(30.0, 30.1),
+            'longitude' => $faker->longitude(31.2, 31.3),
         ]);
 
-        // Doctor users
+        // Doctor users (random emails/names so no duplicate key)
         $doctorUser1 = User::create([
-            'name' => 'Dr. Ahmed',
-            'email' => 'dr.ahmed@example.com',
-            'mobile_number' => '+201111111111',
+            'name' => 'Dr. ' . $faker->firstName(),
+            'email' => $faker->unique()->safeEmail(),
+            'mobile_number' => $faker->numerify('+20##########'),
             'password' => Hash::make('password'),
             'role' => 'doctor',
-            'latitude' => 30.0444,
-            'longitude' => 31.2357,
+            'latitude' => $faker->latitude(30.0, 30.1),
+            'longitude' => $faker->longitude(31.2, 31.3),
         ]);
 
         $doctorUser2 = User::create([
-            'name' => 'Dr. Sara',
-            'email' => 'dr.sara@example.com',
-            'mobile_number' => '+201122222222',
+            'name' => 'Dr. ' . $faker->firstName(),
+            'email' => $faker->unique()->safeEmail(),
+            'mobile_number' => $faker->numerify('+20##########'),
             'password' => Hash::make('password'),
             'role' => 'doctor',
-            'latitude' => 30.0644,
-            'longitude' => 31.2357,
+            'latitude' => $faker->latitude(30.0, 30.1),
+            'longitude' => $faker->longitude(31.2, 31.3),
         ]);
 
         // Patient user
         $patientUser = User::create([
-            'name' => 'Patient Ali',
-            'email' => 'patient.ali@example.com',
-            'mobile_number' => '+201133333333',
+            'name' => $faker->name(),
+            'email' => $faker->unique()->safeEmail(),
+            'mobile_number' => $faker->numerify('+20##########'),
             'password' => Hash::make('password'),
             'role' => 'patient',
-            'latitude' => 30.0544,
-            'longitude' => 31.2357,
+            'latitude' => $faker->latitude(30.0, 30.1),
+            'longitude' => $faker->longitude(31.2, 31.3),
         ]);
 
         $patient = Patient::create([
@@ -81,9 +89,9 @@ class DoctorTestSeeder extends Seeder
             'clinic_id' => $clinicA->id,
             'specialization_id' => $cardiology->id,
             'clinic_address' => $clinicA->address,
-            'license_number' => 'LIC-001',
-            'bio' => 'Experienced cardiologist with a focus on preventive care.',
-            'session_price' => 500.0,
+            'license_number' => 'LIC-' . $faker->unique()->numerify('######'),
+            'bio' => $faker->paragraph(),
+            'session_price' => $faker->randomFloat(2, 200, 800),
         ]);
 
         $doctor2 = Doctor::create([
@@ -91,9 +99,9 @@ class DoctorTestSeeder extends Seeder
             'clinic_id' => $clinicB->id,
             'specialization_id' => $dermatology->id,
             'clinic_address' => $clinicB->address,
-            'license_number' => 'LIC-002',
-            'bio' => 'Dermatologist specializing in skin allergies and cosmetic treatments.',
-            'session_price' => 400.0,
+            'license_number' => 'LIC-' . $faker->unique()->numerify('######'),
+            'bio' => $faker->paragraph(),
+            'session_price' => $faker->randomFloat(2, 200, 800),
         ]);
 
         // Appointments (required by reviews FK)
@@ -121,24 +129,24 @@ class DoctorTestSeeder extends Seeder
             'patient_id' => $patient->id,
             'doctor_id' => $doctor1->id,
             'appointment_id' => $appointment1->id,
-            'rating' => 5,
-            'comment' => 'Excellent doctor, very helpful.',
+            'rating' => $faker->numberBetween(3, 5),
+            'comment' => $faker->sentence(),
         ]);
 
         Review::create([
             'patient_id' => $patient->id,
             'doctor_id' => $doctor1->id,
             'appointment_id' => $appointment2->id,
-            'rating' => 4,
-            'comment' => 'Good experience overall.',
+            'rating' => $faker->numberBetween(3, 5),
+            'comment' => $faker->sentence(),
         ]);
 
         Review::create([
             'patient_id' => $patient->id,
             'doctor_id' => $doctor2->id,
             'appointment_id' => $appointment3->id,
-            'rating' => 3,
-            'comment' => 'Average visit.',
+            'rating' => $faker->numberBetween(3, 5),
+            'comment' => $faker->sentence(),
         ]);
 
         // Favorites
