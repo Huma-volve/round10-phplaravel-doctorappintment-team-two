@@ -40,4 +40,4 @@ Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])
 Route::delete('/delete-account', [DeleteAccountController::class, 'delete'])
     ->middleware('auth:sanctum');
 Route::get('/login/google', [SocialController::class, 'redirectToGoogle']);
-Route::get('/login/google/callback', [SocialController::class, 'handleGoogleCallback']);
+Route::get('/login/google/callback', [SocialController::class, 'handleCallback']);

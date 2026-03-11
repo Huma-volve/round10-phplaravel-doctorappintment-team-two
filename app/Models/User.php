@@ -8,6 +8,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use App\Models\Notifications;
+use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
 {
@@ -29,6 +30,9 @@ class User extends Authenticatable
         'role',
         'latitude',
         'longitude',
+        'social_id',
+        'social_type',
+        
     ];
 
     /**
@@ -65,6 +69,9 @@ class User extends Authenticatable
             'birthdate'     => ['nullable', 'date'],
             'latitude'      => ['nullable', 'required', 'numeric'],
             'longitude'     => ['nullable', 'required', 'numeric'],
+            
+    
+         
         ];
     }
 
