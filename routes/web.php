@@ -77,3 +77,13 @@ Route::get('/404-dash', function () {
 Route::get('/500-dash', function () {
     return view('dashboard.500');
 })->name('500-dash');
+
+use App\Http\Controllers\Dashboard\ChatController;
+
+// Route::middleware(['auth'])->group(function () {
+    Route::get('/dashboard/chat', [ChatController::class, 'index'])->name('chat.index');
+    Route::get('/dashboard/chat/{chat}', [ChatController::class, 'show'])->name('chat.show');
+    Route::post('/dashboard/chat/{chat}/message', [ChatController::class, 'store'])->name('chat.message.store');
+    Route::delete('/dashboard/message/{message}', [ChatController::class, 'destroyMessage'])->name('chat.message.destroy');
+    Route::post('/dashboard/chats/{chat}/favorite', [ChatController::class, 'toggleFavorite'])->name('chat.favorite.toggle');
+// });

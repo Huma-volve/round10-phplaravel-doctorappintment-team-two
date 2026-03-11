@@ -7,6 +7,7 @@ use App\Models\Doctor;
 use App\Models\Patient;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class ChatController extends Controller
 {
@@ -150,21 +151,18 @@ class ChatController extends Controller
     public function toggleFavorite(Chat $chat)
     {
         $user = auth()->user();
-        
         $chat->loadMissing(['patient', 'doctor']);
-
         // Check if the authenticated user's ID matches the chat's patient's user_id OR doctor's user_id
         if ($user->id !== $chat->patient->user_id && $user->id !== $chat->doctor->user_id) {
             return response()->json([
                 'message' => 'User not part of this chat'
             ], 403);
         }
-
-        $chatUser = \DB::table('chat_user')->where('chat_id', $chat->id)->where('user_id', $user->id)->first();
+        $chatUser = DB::table('chat_user')->where('chat_id', $chat->id)->where('user_id', $user->id)->first();
         
         if (!$chatUser) {
             // If they aren't in the pivot but they are the patient/doctor, add them
-            \DB::table('chat_user')->insert([
+            DB::table('chat_user')->insert([
                 'chat_id' => $chat->id,
                 'user_id' => $user->id,
                 'is_favorite' => true,
@@ -174,7 +172,7 @@ class ChatController extends Controller
             $newValue = true;
         } else {
             $newValue = !(bool)$chatUser->is_favorite;
-            \DB::table('chat_user')->where('chat_id', $chat->id)->where('user_id', $user->id)
+            DB::table('chat_user')->where('chat_id', $chat->id)->where('user_id', $user->id)
                 ->update(['is_favorite' => $newValue, 'updated_at' => now()]);
         }
         

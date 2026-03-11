@@ -21,8 +21,8 @@ return new class extends Migration
             $table->string('profile_photo')->nullable();
             $table->string('password');
             $table->enum('role', ['admin', 'patient', 'doctor'])->default('patient');
-            $table->float('latitude');
-            $table->float('longitude');
+            $table->float('latitude')->nullable();
+            $table->float('longitude')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });

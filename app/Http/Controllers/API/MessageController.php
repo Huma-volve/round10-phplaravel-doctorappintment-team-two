@@ -16,7 +16,6 @@ class MessageController extends Controller
     public function index()
     {
         $userId = auth()->id();
-        
         // Find all chats the user is a part of
         $chatIds = Chat::whereHas('patient', function ($q) use ($userId) {
             $q->where('user_id', $userId);
@@ -29,7 +28,6 @@ class MessageController extends Controller
             ->whereIn('chat_id', $chatIds)
             ->latest()
             ->paginate(50); // Using pagination for better performance
-
         return response()->json([
             'messages' => $messages->items(),
             'pagination' => [
@@ -115,10 +113,7 @@ class MessageController extends Controller
     
     }
 
-
-    /*******  7dbfc0c9-da29-42ec-9ac6-4a15c5fcacd1  *******/
     public function destroy(string $id)
     {
-        //
     }
 }

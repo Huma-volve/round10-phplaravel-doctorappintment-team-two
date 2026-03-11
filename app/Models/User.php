@@ -3,17 +3,27 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Contracts\Auth\CanResetPassword;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Relations\HasOne;
-use App\Models\Notifications;
+use Illuminate\Auth\Notifications\ResetPassword as ResetPasswordNotification;
 use Laravel\Sanctum\HasApiTokens;
+use App\Models\Notification;
 
-class User extends Authenticatable
+class User extends Authenticatable implements CanResetPassword
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable, HasApiTokens;
+
+    /**
+     * Send the password reset notification (for forgot-password flow).
+     */
+    public function sendPasswordResetNotification(mixed $token): void
+    {
+        $this->notify(new ResetPasswordNotification($token));
+    }
 
     /**
      * The attributes that are mass assignable.
@@ -24,7 +34,9 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'phone_code',
         'mobile_number',
+        'phone_verified_at',
         'birthdate',
         'profile_photo',
         'role',
@@ -51,6 +63,7 @@ class User extends Authenticatable
     {
         return [
             'email_verified_at' => 'datetime',
+            'phone_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
     }
@@ -95,7 +108,7 @@ class User extends Authenticatable
      */
     public function notifications()
     {
-        return $this->hasMany(Notifications::class)
+        return $this->hasMany(Notification::class)
             ->orderBy('created_at', 'desc');
     }
 
