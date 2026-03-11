@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\Admin\FaqController;
+use App\Http\Controllers\Admin\PolicyController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -77,3 +79,18 @@ Route::get('/404-dash', function () {
 Route::get('/500-dash', function () {
     return view('dashboard.500');
 })->name('500-dash');
+Route::prefix('admin')->group(function () {
+
+    Route::get('/', [FaqController::class, 'index'])->name('faqs.index');
+    Route::get('/faqs', [FaqController::class, 'create'])->name('faqs.create');
+
+    Route::post('/faqs', [FaqController::class, 'store'])->name('faqs.store');
+
+    Route::delete('/faqs/{id}', [FaqController::class, 'destroy'])->name('faqs.destroy');
+
+
+    Route::get('/policies', [PolicyController::class, 'index'])->name('policies.index');
+    Route::get('/policies/create', [PolicyController::class, 'create'])->name('policies.create');
+    Route::post('/policies', [PolicyController::class, 'store'])->name('policies.store');
+    Route::delete('/policies/{id}', [PolicyController::class, 'destroy'])->name('policies.destroy');
+});
