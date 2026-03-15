@@ -2,55 +2,45 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Illuminate\Contracts\Auth\CanResetPassword;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use App\Models\Doctor;
+use App\Models\Patient;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Auth\Notifications\ResetPassword as ResetPasswordNotification;
 use App\Models\Notification;
 
-class User extends Authenticatable implements CanResetPassword
+class User extends Authenticatable
 {
-    /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, Notifiable, HasApiTokens;
-
-    /**
-     * Send the password reset notification (for forgot-password flow).
-     */
-    public function sendPasswordResetNotification(mixed $token): void
-    {
-        $this->notify(new ResetPasswordNotification($token));
-    }
+    use HasFactory, Notifiable;
 
     /**
      * The attributes that are mass assignable.
      *
-     * @var list<string>
+     * @var array<int, string>
      */
     protected $fillable = [
         'name',
         'email',
         'password',
-        'phone_code',
+        'role',
         'mobile_number',
-        'phone_verified_at',
+        'phone_code',
         'birthdate',
         'profile_photo',
-        'role',
         'latitude',
         'longitude',
         'social_id',
         'social_type',
-        
     ];
 
     /**
      * The attributes that should be hidden for serialization.
      *
-     * @var list<string>
+     * @var array<int, string>
      */
     protected $hidden = [
         'password',
@@ -58,35 +48,16 @@ class User extends Authenticatable implements CanResetPassword
     ];
 
     /**
-     * Get the attributes that should be cast.
+     * The attributes that should be cast.
      *
-     * @return array<string, string>
+     * @var array<string, string>
      */
-    protected function casts(): array
-    {
-        return [
-            'email_verified_at' => 'datetime',
-            'phone_verified_at' => 'datetime',
-            'password' => 'hashed',
-        ];
-    }
-
-    public static function rules()
-    {
-        return [
-            'name'          => ['required', 'string', 'max:255'],
-            'email'         => ['required', 'email', 'unique:users,email'],
-            'password'      => ['nullable', 'same:confirm_password'],
-            'role'          => ['required', 'in:admin,patient,doctor'],
-            'mobile_number' => ['required', 'string', 'max:20'],
-            'birthdate'     => ['nullable', 'date'],
-            'latitude'      => ['nullable', 'required', 'numeric'],
-            'longitude'     => ['nullable', 'required', 'numeric'],
-            
-    
-         
-        ];
-    }
+    protected $casts = [
+        'email_verified_at' => 'datetime',
+        'birthdate' => 'date',
+        'latitude' => 'float',
+        'longitude' => 'float',
+    ];
 
     public function doctor()
     {
@@ -98,7 +69,7 @@ class User extends Authenticatable implements CanResetPassword
         return $this->hasMany(Message::class, 'sender_id');
     }
 
-    public function patient(): HasOne
+    public function patient()
     {
         return $this->hasOne(Patient::class);
     }
@@ -135,3 +106,4 @@ class User extends Authenticatable implements CanResetPassword
             ->update(['is_read' => true, 'read_at' => now()]);
     }
 }
+ 

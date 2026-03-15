@@ -24,11 +24,11 @@
             <li><a href="{{ route('students') }}" class="sidebar-link"><i class="fa-solid fa-user"></i>
                     <p>Students</p>
                 </a></li>
-            <li><a href="{{ route('teachers') }}" class="sidebar-link"><i class="fa-solid fa-chalkboard-user"></i>
-                    <p>Teachers</p>
+            <li><a href="{{ route('admin.doctors.index') }}" class="sidebar-link"><i class="fa-solid fa-chalkboard-user"></i>
+                    <p>Doctors</p>
                 </a></li>
-            <li><a href="{{ route('add-category') }}" class="sidebar-link"><i class="fa-solid fa-folder-plus"></i>
-                    <p>Add Category</p>
+            <li><a href="{{ route('admin.doctors.create') }}" class="sidebar-link"><i class="fa-solid fa-folder-plus"></i>
+                    <p>Add Doctor</p>
                 </a></li>
 
             <li><a href="{{ route('library') }}" class="sidebar-link"><i class="fa-solid fa-book"></i><p>Library</p></a></li>
@@ -52,14 +52,29 @@
             </li>
             <li>
                 <a href="#" class="sidebar-link submenu-parent"><i class="fa-solid fa-list"></i>
-                    <p>Pages <i class="fa-solid fa-chevron-right right-icon"></i></p>
+                    <p>Auth <i class="fa-solid fa-chevron-right right-icon"></i></p>
                 </a>
                 <ul class="sidebar-submenu">
-                    <li><a href="{{ route('login-dash') }}" class="submenu-link">Login</a></li>
-                    <li><a href="{{ route('signup-dash') }}" class="submenu-link">Register</a></li>
+                 <li>
+
+    @guest
+        <a href="{{ route('show-login') }}" class="submenu-link">Login</a>
+    @endguest
+
+    @auth
+        <form action="{{ route('logout-dash') }}" method="POST">
+            @csrf
+            <button type="submit" class="submenu-link border-0 bg-transparent">
+                Logout
+            </button>
+        </form>
+    @endauth
+
+</li>
+                    <!-- <li><a href="{{ route('signup-dash') }}" class="submenu-link">Register</a></li>
                     <li><a href="{{ route('forgot-password-dash') }}" class="submenu-link">Forgot password</a></li>
                     <li><a href="{{ route('404-dash') }}" class="submenu-link">404 page</a></li>
-                    <li><a href="{{ route('500-dash') }}" class="submenu-link">500 page</a></li>
+                    <li><a href="{{ route('500-dash') }}" class="submenu-link">500 page</a></li> -->
                 </ul>
             </li>
 

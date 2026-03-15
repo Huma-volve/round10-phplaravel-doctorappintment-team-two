@@ -7,10 +7,13 @@ use App\Models\Doctor;
 use App\Models\Patient;
 use App\Models\User;
 use App\Services\PhoneVerificationService;
+use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
+use Illuminate\Support\Facades\Auth;
+
 
 class RegisteredUserController extends Controller
 {
