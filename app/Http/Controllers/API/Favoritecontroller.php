@@ -8,7 +8,7 @@ use App\Models\Favorite;
 use App\Http\Resources\Api\FavoritedoctorResource;
 use Illuminate\Support\Facades\Auth;
 
-class Favoritecontroller extends Controller
+class FavoriteController extends Controller
 {
     public function index()
     {

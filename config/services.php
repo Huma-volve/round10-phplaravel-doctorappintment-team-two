@@ -51,4 +51,9 @@ return [
 
 ],
     
+    
+
+    'phone_otp' => [
+        'code' => env('PHONE_OTP_CODE', '1234'),
+    ],
 ];

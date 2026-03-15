@@ -2,7 +2,7 @@
 
 namespace App\Notifications\Channels;
 
-use App\Models\Notifications as NotificationModel;
+use App\Models\Notification as NotificationModel;
 use Illuminate\Notifications\Notification;
 
 class CustomDatabaseChannel
