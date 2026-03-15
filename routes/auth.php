@@ -6,6 +6,7 @@ use App\Http\Controllers\Auth\NewPasswordController;
 use App\Http\Controllers\Auth\PasswordResetLinkController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Auth\VerifyEmailController;
+use App\Http\Controllers\Auth\VerifyPhoneController;
 use App\Http\Controllers\Auth\DeleteAccountController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\SocialController;
@@ -13,6 +14,14 @@ use App\Http\Controllers\Auth\SocialController;
 Route::post('/register', [RegisteredUserController::class, 'store'])
     ->middleware('guest')
     ->name('register');
+
+Route::post('/verify-phone', [VerifyPhoneController::class, 'store'])
+    ->middleware('guest')
+    ->name('verify-phone');
+
+Route::post('/resend-otp', [VerifyPhoneController::class, 'resend'])
+    ->middleware('guest')
+    ->name('resend-otp');
 
 Route::post('/login', [AuthenticatedSessionController::class, 'store'])
     ->middleware('guest')

@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class Notifications extends Model
+class Notification extends Model
 {
     use HasFactory;
 
@@ -31,5 +31,13 @@ class Notifications extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    /**
+     * Scope for unread notifications
+     */
+    public function scopeUnread($query)
+    {
+        return $query->where('is_read', false);
     }
 }

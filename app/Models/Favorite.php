@@ -12,24 +12,23 @@ class Favorite extends Model
      *
      * @var string
      */
-    protected $table = 'favorites';
+    
     /**
      * The attributes that are mass assignable.
      *
      * @var array<int, string>
      */
-    protected $fillable = [
-        'patient_id',
-        'doctor_id',
-    ];
+    protected $table = 'favorites';
+    protected $guarded = [];
 
-    public function doctor(): BelongsTo
+    
+    public function doctor()
     {
-        return $this->belongsTo(Doctor::class);
+        return $this->belongsTo(doctor::class, 'doctor_id');
     }
 
-    public function patient(): BelongsTo
+    public function patient()
     {
-        return $this->belongsTo(Patient::class);
+        return $this->belongsTo(patient::class, 'patient_id');
     }
 }

@@ -1,27 +1,23 @@
 <?php
 
-
+use App\Http\Controllers\API\ChatController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ReviewController;
-
-use App\Http\Controllers\ChatController;
-use App\Http\Controllers\MessageController;
-use App\Models\Notifications;
+use App\Models\Notification;
 use App\Models\User;
-
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\DoctorController;
-use App\Http\Controllers\API\Favoritecontroller;
+use App\Http\Controllers\API\FavoriteController;
+use App\Http\Controllers\API\MessageController;
 use App\Http\Controllers\API\SearchController;
+use App\Http\Controllers\API\StripepayController;
+use App\Http\Controllers\API\AppointmentController;
 
 Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
     return $request->user();
 });
-require __DIR__.'/auth.php';
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
+
 
 // Public doctor endpoints
 Route::get('/doctors/nearby', [DoctorController::class, 'nearby']);
@@ -33,11 +29,31 @@ Route::get('/doctors/{doctor}', [DoctorController::class, 'show']);
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('/doctors/{doctor}/favorite', [DoctorController::class, 'favorite']);
     Route::delete('/doctors/{doctor}/favorite', [DoctorController::class, 'unfavorite']);
-     Route::get('/favorites', [Favoritecontroller::class, 'index']);
-    Route::post('/favorites_store', [Favoritecontroller::class, 'store']);
+
+
+    Route::get('/favorites', [FavoriteController::class, 'index']);
+    Route::post('/favorites_store', [FavoriteController::class, 'store']);
+
+
+    Route::get('/stripe/checkout/{appointment_id}', [StripepayController::class, 'checkout']);
+
+    Route::get('/payment/success/{appointment_id}', [StripepayController::class, 'success']);
+
+    Route::get('/payment/cancel/{appointment_id}', [StripepayController::class, 'cancel']);
+
+
+    Route::get('/appointments', [AppointmentController::class, 'index']);
+
+    Route::post('/appointments', [AppointmentController::class, 'store']);
+
+    Route::post('/appointments/{id}/confirm', [AppointmentController::class, 'confirm']);
+
+    Route::post('/appointments/{id}/cancel', [AppointmentController::class, 'cancel']);
+
+    Route::post('/appointments/{id}/reschedule', [AppointmentController::class, 'reschedule']);
 });
 
-Route::middleware(['auth:sanctum', 'throttle:api'])->group(function () {
+Route::middleware(['auth:sanctum'])->group(function () {
     // Specific chat routes must come BEFORE apiResource
     Route::get('/chats/favorites', [ChatController::class, 'allFavoriteChats']);
     Route::post('/chats/{chat}/favorite', [ChatController::class, 'toggleFavorite']);
@@ -45,6 +61,7 @@ Route::middleware(['auth:sanctum', 'throttle:api'])->group(function () {
     Route::get('/chats/{chat}/unread-count-message', [ChatController::class, 'unreadMessagesCount']);
 
     Route::apiResource('chats', ChatController::class);
+    Route::apiResource('messages', MessageController::class);
 });
 
 
@@ -79,11 +96,9 @@ Route::prefix('users')->group(function () {
 });
 Route::get('test', function () {
     $user = User::find(1);
-    $notification = Notifications::first();
+    $notification = Notification::first();
     $user->notify(new \App\Notifications\BroadcastNotification('Test Notification', 'This is a test notification'));
     event(new \App\Events\NotificationBroadcastEvent($user->id, $notification));
     return response()->json(['message' => 'API is working']);
 });
-
-
-  
+require __DIR__ . '/auth.php';
