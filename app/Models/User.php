@@ -8,6 +8,10 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use App\Models\Doctor;
 use App\Models\Patient;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\Relations\HasOne;
+use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Auth\Notifications\ResetPassword as ResetPasswordNotification;
+use App\Models\Notification;
 
 class User extends Authenticatable
 {
