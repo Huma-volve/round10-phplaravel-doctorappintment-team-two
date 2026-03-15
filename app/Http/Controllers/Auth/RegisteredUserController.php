@@ -64,6 +64,12 @@ class RegisteredUserController extends Controller
         event(new Registered($user));
         $this->phoneVerification->sendOtp($user);
 
+        Auth::login($user);
+
+       return response([
+    "message"=>"User registered successfully",
+    "user"=>$user
+]);
         return response()->json([
             'message' => 'OTP sent to your phone. Enter it in the verify step to get your access token.',
             'next_step' => 'POST /verify-phone with phone_code, mobile_number, and otp (no token until verified).',

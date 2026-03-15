@@ -42,6 +42,9 @@ class User extends Authenticatable implements CanResetPassword
         'role',
         'latitude',
         'longitude',
+        'social_id',
+        'social_type',
+        
     ];
 
     /**
@@ -79,6 +82,9 @@ class User extends Authenticatable implements CanResetPassword
             'birthdate'     => ['nullable', 'date'],
             'latitude'      => ['nullable', 'required', 'numeric'],
             'longitude'     => ['nullable', 'required', 'numeric'],
+            
+    
+         
         ];
     }
 
