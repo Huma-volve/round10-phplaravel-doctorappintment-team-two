@@ -54,7 +54,7 @@ Route::middleware(['admin'])->group(function () {
 
     Route::get('/', function () {
         return view('dashboard.index');
-    })->name('dashboard.index');
+    })->name('dashboard.index')->middleware(['auth','admin']);
 
     Route::get('/students', function () {
         return view('dashboard.students');
