@@ -101,4 +101,9 @@ Route::get('test', function () {
     event(new \App\Events\NotificationBroadcastEvent($user->id, $notification));
     return response()->json(['message' => 'API is working']);
 });
+// all doctors
+Route::get('/alldoctors', [DoctorController::class, 'getDoctors'])->middleware('auth:sanctum');
+// all patients
+Route::get('/allpatients', [DoctorController::class, 'getPatients'])->middleware('auth:sanctum');
 require __DIR__ . '/auth.php';
+  

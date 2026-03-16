@@ -21,6 +21,19 @@ class DoctorController extends Controller
     ) {
     }
 
+    // get all doctors
+    public function getDoctors(): JsonResponse
+    {
+        $doctors = Doctor::all();
+        return response()->json($doctors);
+    }
+    // get all patients
+    public function getPatients(): JsonResponse
+    {
+        $patients = Patient::all();
+        return response()->json($patients);
+    }
+    
     public function show(Doctor $doctor, DoctorDetailsRequest $request): JsonResponse
     {
         $patient = $this->currentPatient();
