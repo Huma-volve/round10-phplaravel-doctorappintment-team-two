@@ -31,6 +31,14 @@
             <li><a href="{{ route('admin.doctors.create') }}" class="sidebar-link"><i class="fa-solid fa-folder-plus"></i>
                     <p>Add Doctor</p>
                 </a></li>
+                <!-- add link to form to add clicnics -->
+                 <li><a href="{{ route('admin.doctors.create-clinic') }}" class="sidebar-link"><i class="fa-solid fa-folder-plus"></i>
+                    <p>Add Clinic</p>
+                </a></li>
+                <!-- add link to add specializations -->
+                 <li><a href="{{ route('admin.doctors.create-specialization') }}" class="sidebar-link"><i class="fa-solid fa-folder-plus"></i>
+                    <p>Add Specialization</p>
+                </a></li>
             <li>
                 <a href="#" class="sidebar-link submenu-parent"><i class="fa-solid fa-list"></i>
                     <p>Booking <i class="fa-solid fa-chevron-right right-icon"></i></p>
