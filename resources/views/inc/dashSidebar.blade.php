@@ -24,24 +24,26 @@
             <li><a href="{{ route('students') }}" class="sidebar-link"><i class="fa-solid fa-user"></i>
                     <p>Students</p>
                 </a></li> -->
-@if(auth()->user()->role === 'admin')
+            @if(auth()->user()->role === 'admin')
             <li><a href="{{ route('admin.doctors.index') }}" class="sidebar-link"><i class="fa-solid fa-chalkboard-user"></i>
                     <p>Doctors</p>
                 </a></li>
             <li><a href="{{ route('admin.doctors.create') }}" class="sidebar-link"><i class="fa-solid fa-folder-plus"></i>
                     <p>Add Doctor</p>
                 </a></li>
-@endif
+            @endif
 
-@if(auth()->user()->role === 'admin')
+            @if(auth()->user()->role === 'admin')
             <!-- <li><a href="{{ route('library') }}" class="sidebar-link"><i class="fa-solid fa-book"></i><p>Library</p></a></li>
             <li><a href="{{ route('department') }}" class="sidebar-link"><i class="fa-solid fa-building"></i><p>Department</p></a></li>
             <li><a href="{{ route('staff') }}" class="sidebar-link"><i class="fa-solid fa-users"></i><p>Staff</p></a></li>
             <li><a href="{{ route('fees') }}" class="sidebar-link"><i class="fa-solid fa-dollar-sign"></i><p>Fees</p></a></li> -->
-@endif
-            <li><a href="{{ route('chat.index') }}" class="sidebar-link"><i class="fa-solid fa-comments"></i><p>Chat</p></a></li>
+            @endif
+            <li><a href="{{ route('chat.index') }}" class="sidebar-link"><i class="fa-solid fa-comments"></i>
+                    <p>Chat</p>
+                </a></li>
 
-@if(auth()->user()->role === 'admin')
+            @if(auth()->user()->role === 'admin')
             <!-- Pages -->
             <li>
                 <a href="#" class="sidebar-link submenu-parent"><i class="fa-solid fa-list"></i>
@@ -55,28 +57,28 @@
 
                 </ul>
             </li>
-@endif
+            @endif
             <li>
                 <a href="#" class="sidebar-link submenu-parent"><i class="fa-solid fa-list"></i>
                     <p>Auth <i class="fa-solid fa-chevron-right right-icon"></i></p>
                 </a>
                 <ul class="sidebar-submenu">
-                 <li>
+                    <li>
 
-    @guest
-        <a href="{{ route('show-login') }}" class="submenu-link">Login</a>
-    @endguest
+                        @guest
+                        <a href="{{ route('show-login') }}" class="submenu-link">Login</a>
+                        @endguest
 
-    @auth
-        <form action="{{ route('logout-dash') }}" method="POST">
-            @csrf
-            <button type="submit" class="submenu-link border-0 bg-transparent">
-                Logout
-            </button>
-        </form>
-    @endauth
+                        @auth
+                        <form action="{{ route('logout-dash') }}" method="POST">
+                            @csrf
+                            <button type="submit" class="submenu-link border-0 bg-transparent">
+                                Logout
+                            </button>
+                        </form>
+                        @endauth
 
-</li>
+                    </li>
                     <!-- <li><a href="{{ route('signup-dash') }}" class="submenu-link">Register</a></li>
                     <li><a href="{{ route('forgot-password-dash') }}" class="submenu-link">Forgot password</a></li>
                     <li><a href="{{ route('404-dash') }}" class="submenu-link">404 page</a></li>

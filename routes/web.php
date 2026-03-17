@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\FaqController;
 use App\Http\Controllers\Admin\PolicyController;
+use App\Http\Controllers\Admin\ReiewController;
 use App\Http\Controllers\AdminAuth\AuthController;
 use App\Http\Controllers\Dashboard\ChatController;
 use App\Http\Controllers\AdminDoctor\DoctorController;
@@ -18,7 +19,6 @@ Route::prefix('dashboard')->group(function () {
     Route::get('/login', [AuthController::class, 'showLogin'])->name('show-login');
     Route::post('/login', [AuthController::class, 'login'])->name('login-dash');
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout-dash');
-
 });
 
 Route::get('/signup-dash', function () {
@@ -44,28 +44,79 @@ Route::get('/500-dash', function () {
 |--------------------------------------------------------------------------
 */
 
-Route::middleware(['admin:admin,doctor'])->group(function () {
+Route::middleware(['admin'])->group(function () {
 
     /*
     |--------------------------------------------------------------------------
-    | Dashboard Pages (Accessible to Admin & Doctor)
+    | Dashboard Pages
     |--------------------------------------------------------------------------
-    |
-    | Note: Some sub-pages are restricted to Admin-only in the sidebar
-    | and via nested middleware groups below.
     */
 
     Route::get('/', function () {
         return view('dashboard.index');
-    })->name('dashboard.index')->middleware(['auth', 'admin:admin,doctor']);
+    })->name('dashboard.index');
+
+    Route::get('/students', function () {
+        return view('dashboard.students');
+    })->name('students');
+
+    Route::get('/teachers', function () {
+        return view('dashboard.teacher');
+    })->name('teachers');
+
+    Route::get('/add-course', function () {
+        return view('dashboard.add-course');
+    })->name('add-course');
+
+    Route::get('/courses', function () {
+        return view('dashboard.course');
+    })->name('courses');
+
+    Route::get('/course-details', function () {
+        return view('dashboard.course-details');
+    })->name('course-details');
+
+    Route::get('/add-category', function () {
+        return view('dashboard.addCategory');
+    })->name('add-category');
+
+    Route::get('/data-table', function () {
+        return view('dashboard.data-table');
+    })->name('data-table');
+
+    Route::get('/bootstrap-table', function () {
+        return view('dashboard.table-bootstrap');
+    })->name('bootstrap-table');
+
+    Route::get('/library', function () {
+        return view('dashboard.library');
+    })->name('library');
+
+    Route::get('/department', function () {
+        return view('dashboard.department');
+    })->name('department');
+
+    Route::get('/staff', function () {
+        return view('dashboard.staff');
+    })->name('staff');
+
+    Route::get('/fees', function () {
+        return view('dashboard.fees');
+    })->name('fees');
+
+    Route::get('/form', function () {
+        return view('dashboard.form');
+    })->name('form');
+
 
     /*
     |--------------------------------------------------------------------------
-    | Chat Routes (Accessible to Admin & Doctor)
+    | Chat Routes
     |--------------------------------------------------------------------------
     */
 
     Route::prefix('dashboard/chat')->group(function () {
+
         Route::get('/', [ChatController::class, 'index'])->name('chat.index');
         Route::get('/{chat}', [ChatController::class, 'show'])->name('chat.show');
         Route::post('/{chat}/message', [ChatController::class, 'store'])->name('chat.message.store');
@@ -73,95 +124,40 @@ Route::middleware(['admin:admin,doctor'])->group(function () {
         Route::post('/chats/{chat}/favorite', [ChatController::class, 'toggleFavorite'])->name('chat.favorite.toggle');
     });
 
+
     /*
     |--------------------------------------------------------------------------
-    | Admin-Only Routes
+    | FAQ & Policies
     |--------------------------------------------------------------------------
     */
 
-    Route::middleware(['admin:admin'])->group(function () {
+    Route::prefix('admin')->group(function () {
 
-        Route::get('/students', function () {
-            return view('dashboard.students');
-        })->name('students');
+        Route::get('/', [FaqController::class, 'index'])->name('faqs.index');
 
-        Route::get('/teachers', function () {
-            return view('dashboard.teacher');
-        })->name('teachers');
+        Route::get('/faqs', [FaqController::class, 'create'])->name('faqs.create');
+        Route::post('/faqs', [FaqController::class, 'store'])->name('faqs.store');
+        Route::delete('/faqs/{id}', [FaqController::class, 'destroy'])->name('faqs.destroy');
 
-        Route::get('/add-course', function () {
-            return view('dashboard.add-course');
-        })->name('add-course');
-
-        Route::get('/courses', function () {
-            return view('dashboard.course');
-        })->name('courses');
-
-        Route::get('/course-details', function () {
-            return view('dashboard.course-details');
-        })->name('course-details');
-
-        Route::get('/add-category', function () {
-            return view('dashboard.addCategory');
-        })->name('add-category');
-
-        Route::get('/data-table', function () {
-            return view('dashboard.data-table');
-        })->name('data-table');
-
-        Route::get('/bootstrap-table', function () {
-            return view('dashboard.table-bootstrap');
-        })->name('bootstrap-table');
-
-        Route::get('/library', function () {
-            return view('dashboard.library');
-        })->name('library');
-
-        Route::get('/department', function () {
-            return view('dashboard.department');
-        })->name('department');
-
-        Route::get('/staff', function () {
-            return view('dashboard.staff');
-        })->name('staff');
-
-        Route::get('/fees', function () {
-            return view('dashboard.fees');
-        })->name('fees');
-
-        Route::get('/form', function () {
-            return view('dashboard.form');
-        })->name('form');
-
-        /*
-        |--------------------------------------------------------------------------
-        | FAQ & Policies
-        |--------------------------------------------------------------------------
-        */
-
-        Route::prefix('admin')->group(function () {
-            Route::get('/', [FaqController::class, 'index'])->name('faqs.index');
-            Route::get('/faqs', [FaqController::class, 'create'])->name('faqs.create');
-            Route::post('/faqs', [FaqController::class, 'store'])->name('faqs.store');
-            Route::delete('/faqs/{id}', [FaqController::class, 'destroy'])->name('faqs.destroy');
-            Route::get('/policies', [PolicyController::class, 'index'])->name('policies.index');
-            Route::get('/policies/create', [PolicyController::class, 'create'])->name('policies.create');
-            Route::post('/policies', [PolicyController::class, 'store'])->name('policies.store');
-            Route::delete('/policies/{id}', [PolicyController::class, 'destroy'])->name('policies.destroy');
-        });
-
-        /*
-        |--------------------------------------------------------------------------
-        | Admin Doctors
-        |--------------------------------------------------------------------------
-        */
-
-        Route::prefix('admin/doctor')->group(function () {
-            Route::get('/', [DoctorController::class, 'index'])->name('admin.doctors.index');
-            Route::get('/create', [DoctorController::class, 'create'])->name('admin.doctors.create');
-            Route::post('/', [DoctorController::class, 'store'])->name('admin.doctors.store');
-            Route::delete('/{id}', [DoctorController::class, 'destroy'])->name('admin.doctors.destroy');
-        });
+        Route::get('/policies', [PolicyController::class, 'index'])->name('policies.index');
+        Route::get('/policies/create', [PolicyController::class, 'create'])->name('policies.create');
+        Route::post('/policies', [PolicyController::class, 'store'])->name('policies.store');
+        Route::delete('/policies/{id}', [PolicyController::class, 'destroy'])->name('policies.destroy');
     });
+    Route::get('/review', [ReiewController::class, 'create'])->name('review.create');
+    Route::post('/review', [ReiewController::class, 'store'])->name('review.store');
 
+    /*
+    |--------------------------------------------------------------------------
+    | Admin Doctors
+    |--------------------------------------------------------------------------
+    */
+
+    Route::prefix('admin/doctor')->group(function () {
+
+        Route::get('/', [DoctorController::class, 'index'])->name('admin.doctors.index');
+        Route::get('/create', [DoctorController::class, 'create'])->name('admin.doctors.create');
+        Route::post('/', [DoctorController::class, 'store'])->name('admin.doctors.store');
+        Route::delete('/{id}', [DoctorController::class, 'destroy'])->name('admin.doctors.destroy');
+    });
 });
