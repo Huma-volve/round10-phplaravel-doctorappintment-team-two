@@ -24,12 +24,19 @@ class ChatController extends Controller
             return "No doctor found with ID 2. Please create a doctor or log in.";
         }
 
-        // Fetch all chats involving this user
-        $chats = Chat::whereHas('doctor', function ($q) use ($user) {
-            $q->where('user_id', $user->id);
-        })->orWhereHas('patient', function ($q) use ($user) {
-            $q->where('user_id', $user->id);
-        })->with(['patient.user', 'doctor.user', 'messages' => function($query) {
+        // Fetch all chats involving this user (or all if admin)
+        $query = Chat::query();
+        if ($user->role !== 'admin') {
+            $query->where(function($q) use ($user) {
+                $q->whereHas('doctor', function ($dq) use ($user) {
+                    $dq->where('user_id', $user->id);
+                })->orWhereHas('patient', function ($pq) use ($user) {
+                    $pq->where('user_id', $user->id);
+                });
+            });
+        }
+
+        $chats = $query->with(['patient.user', 'doctor.user', 'messages' => function($query) {
             $query->latest()->limit(1);
         }, 'users' => function($q) use ($user) {
             $q->where('users.id', $user->id);
@@ -85,29 +92,38 @@ class ChatController extends Controller
             return redirect()->route('login-dash');
         }
         
-        // Ensure user is part of the chat
-        if ($chat->doctor->user_id !== $user->id && $chat->patient->user_id !== $user->id) {
+        // Ensure user is part of the chat (unless admin)
+        if ($user->role !== 'admin' && $chat->doctor->user_id !== $user->id && $chat->patient->user_id !== $user->id) {
             abort(403);
         }
 
-        // Mark messages as read
-        $chat->messages()->where('sender_id', '!=', $user->id)->update(['is_read' => true]);
+        // Mark messages as read (unless admin)
+        if ($user->role !== 'admin') {
+            $chat->messages()->where('sender_id', '!=', $user->id)->update(['is_read' => true]);
+        }
 
         $chat->load(['messages.sender', 'patient.user', 'doctor.user']);
         
-        // Get the other user's info
-        if ($chat->doctor->user_id === $user->id) {
+        // Get the other user's info (for display in header)
+        if ($chat->doctor && $chat->doctor->user_id === $user->id) {
             $other_user = $chat->patient->user;
         } else {
             $other_user = $chat->doctor->user;
         }
 
         // Fetch all chats for the sidebar
-        $chats = Chat::whereHas('doctor', function ($q) use ($user) {
-            $q->where('user_id', $user->id);
-        })->orWhereHas('patient', function ($q) use ($user) {
-            $q->where('user_id', $user->id);
-        })->with(['patient.user', 'doctor.user', 'messages' => function($query) {
+        $query = Chat::query();
+        if ($user->role !== 'admin') {
+            $query->where(function($q) use ($user) {
+                $q->whereHas('doctor', function ($dq) use ($user) {
+                    $dq->where('user_id', $user->id);
+                })->orWhereHas('patient', function ($pq) use ($user) {
+                    $pq->where('user_id', $user->id);
+                });
+            });
+        }
+
+        $chats = $query->with(['patient.user', 'doctor.user', 'messages' => function($query) {
             $query->latest()->limit(1);
         }, 'users' => function($q) use ($user) {
             $q->where('users.id', $user->id);
@@ -227,6 +243,10 @@ class ChatController extends Controller
             return response()->json(['error' => 'Unauthenticated'], 401);
         }
 
+        if ($user->role === 'admin') {
+            return response()->json(['error' => 'Admins cannot favorite chats'], 403);
+        }
+
         // Ensure user is part of the chat
         if ($chat->doctor->user_id !== $user->id && $chat->patient->user_id !== $user->id) {
             return response()->json(['error' => 'Unauthorized'], 403);
@@ -262,9 +282,7 @@ class ChatController extends Controller
     private function getAuthUser()
     {
         $user = Auth::user();
-        if (!$user) {
-            $user = User::with('doctor.specialization')->find(2); 
-        } else {
+        if ($user) {
             $user->load('doctor.specialization');
         }
         return $user;

@@ -21,17 +21,15 @@ class AuthController extends Controller
 
         if (auth()->attempt($credentials)) {
 
-            if (auth()->user()->role === 'admin') {
-
+            if (auth()->user()->role === 'admin' || auth()->user()->role === 'doctor') {
                 $request->session()->regenerate();
-
                 return redirect()->route('dashboard.index');
             }
 
             auth()->logout();
 
             return back()->withErrors([
-                'email' => 'You do not have admin access.'
+                'email' => 'You do not have permission to access the dashboard.'
             ]);
         }
 

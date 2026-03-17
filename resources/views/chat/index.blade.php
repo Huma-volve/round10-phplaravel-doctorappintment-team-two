@@ -254,7 +254,7 @@
     .favorite-toggle {
         position: absolute;
         right: 18px;
-        top: 50%;
+        top: 75%;
         transform: translateY(-50%);
         font-size: 1rem;
         color: #d1d7db;
@@ -288,7 +288,7 @@
                 <img src="{{ $currentUser->profile_photo ? asset('storage/'.$currentUser->profile_photo) : asset('assets/img/profiles/avatar-02.jpg') }}" alt="">
                 <div class="doc-info">
                     <h6>{{ $currentUser->name }}</h6>
-                    <p>{{ $currentUser->doctor->specialization->name ?? 'Doctor' }}</p>
+                    <p>{{ $currentUser->doctor?->specialization?->name ?? 'Admin' }}</p>
                 </div>
             </div>
             <div class="sidebar-title-row">
@@ -302,9 +302,11 @@
         <div class="chat-list" id="chatList">
             @forelse($chats as $c)
                 <div class="chat-item-container" data-starred="{{ $c->is_favorite ? 'true' : 'false' }}">
+                    @if(auth()->user()->role !== 'admin')
                     <span class="favorite-toggle {{ $c->is_favorite ? 'is-favorite' : '' }}" onclick="toggleFavorite(event, '{{ $c->id }}')">
                         <i class="fa{{ $c->is_favorite ? 's' : 'r' }} fa-star"></i>
                     </span>
+                    @endif
                     <a href="{{ route('chat.show', $c->id) }}" class="chat-item {{ isset($chat) && $chat->id == $c->id ? 'active' : '' }}">
                         <div class="chat-avatar-wrapper">
                             <img src="{{ $c->other_user->profile_photo ? asset('storage/'.$c->other_user->profile_photo) : asset('assets/img/profiles/avatar-01.jpg') }}" alt="" class="chat-avatar">
@@ -397,7 +399,7 @@
         event.stopPropagation();
         
         try {
-            const response = await fetch(`/dashboard/chats/${chatId}/favorite`, {
+            const response = await fetch(`/dashboard/chat/chats/${chatId}/favorite`, {
                 method: 'POST',
                 headers: {
                     'X-CSRF-TOKEN': '{{ csrf_token() }}',

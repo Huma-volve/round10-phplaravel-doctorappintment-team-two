@@ -18,25 +18,30 @@
             <li><a href="{{ route('dashboard.index') }}" class="sidebar-link active"><i class="fa-solid fa-house"></i>
                     <p>Dashboard</p>
                 </a></li>
-            <li><a href="{{ route('courses') }}" class="sidebar-link"><i class="fa-brands fa-discourse"></i>
+            <!-- <li><a href="{{ route('courses') }}" class="sidebar-link"><i class="fa-brands fa-discourse"></i>
                     <p>Courses</p>
                 </a></li>
             <li><a href="{{ route('students') }}" class="sidebar-link"><i class="fa-solid fa-user"></i>
                     <p>Students</p>
-                </a></li>
+                </a></li> -->
+@if(auth()->user()->role === 'admin')
             <li><a href="{{ route('admin.doctors.index') }}" class="sidebar-link"><i class="fa-solid fa-chalkboard-user"></i>
                     <p>Doctors</p>
                 </a></li>
             <li><a href="{{ route('admin.doctors.create') }}" class="sidebar-link"><i class="fa-solid fa-folder-plus"></i>
                     <p>Add Doctor</p>
                 </a></li>
+@endif
 
-            <li><a href="{{ route('library') }}" class="sidebar-link"><i class="fa-solid fa-book"></i><p>Library</p></a></li>
+@if(auth()->user()->role === 'admin')
+            <!-- <li><a href="{{ route('library') }}" class="sidebar-link"><i class="fa-solid fa-book"></i><p>Library</p></a></li>
             <li><a href="{{ route('department') }}" class="sidebar-link"><i class="fa-solid fa-building"></i><p>Department</p></a></li>
             <li><a href="{{ route('staff') }}" class="sidebar-link"><i class="fa-solid fa-users"></i><p>Staff</p></a></li>
-            <li><a href="{{ route('fees') }}" class="sidebar-link"><i class="fa-solid fa-dollar-sign"></i><p>Fees</p></a></li>
+            <li><a href="{{ route('fees') }}" class="sidebar-link"><i class="fa-solid fa-dollar-sign"></i><p>Fees</p></a></li> -->
+@endif
             <li><a href="{{ route('chat.index') }}" class="sidebar-link"><i class="fa-solid fa-comments"></i><p>Chat</p></a></li>
 
+@if(auth()->user()->role === 'admin')
             <!-- Pages -->
             <li>
                 <a href="#" class="sidebar-link submenu-parent"><i class="fa-solid fa-list"></i>
@@ -50,6 +55,7 @@
 
                 </ul>
             </li>
+@endif
             <li>
                 <a href="#" class="sidebar-link submenu-parent"><i class="fa-solid fa-list"></i>
                     <p>Auth <i class="fa-solid fa-chevron-right right-icon"></i></p>
@@ -79,7 +85,7 @@
             </li>
 
             <!-- Tables -->
-            <li>
+            <!-- <li>
                 <a href="#" class="sidebar-link submenu-parent"><i class="fa-solid fa-list"></i>
                     <p>Table <i class="fa-solid fa-chevron-right right-icon"></i></p>
                 </a>
@@ -87,17 +93,17 @@
                     <li><a href="{{ route('bootstrap-table') }}" class="submenu-link">Bootstrap</a></li>
                     <li><a href="{{ route('data-table') }}" class="submenu-link">DataTable</a></li>
                 </ul>
-            </li>
+            </li> -->
 
             <!-- Components -->
-            <li>
+            <!-- <li>
                 <a href="#" class="sidebar-link submenu-parent"><i class="fa-solid fa-list"></i>
                     <p>Components <i class="fa-solid fa-chevron-right right-icon"></i></p>
                 </a>
                 <ul class="sidebar-submenu">
                     <li><a href="{{ route('form') }}" class="submenu-link">Form Element</a></li>
                 </ul>
-            </li>
+            </li> -->
         </ul>
     </div>
 </div>

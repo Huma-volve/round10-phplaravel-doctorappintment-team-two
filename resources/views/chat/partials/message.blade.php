@@ -1,14 +1,27 @@
-<div class="message-bubble-container {{ $message->sender_id === $currentUser->id ? 'justify-content-end' : 'justify-content-start' }}" id="message-container-{{ $message->id }}">
-    <div class="message-bubble {{ $message->sender_id === $currentUser->id ? 'sent' : 'received' }}">
+@php
+    $isRightAligned = false;
+    $senderName = $message->sender->name ?? 'Unknown';
+    if ($currentUser->role === 'admin') {
+        $isRightAligned = ($message->sender->role ?? '') === 'doctor';
+        $senderName = ($message->sender->role ?? '') === 'doctor' ? 'Dr. ' . $senderName : $senderName;
+    } else {
+        $isRightAligned = $message->sender_id === $currentUser->id;
+        $senderName = $isRightAligned ? $currentUser->name : $senderName;
+    }
+@endphp
+<div class="message-bubble-container {{ $isRightAligned ? 'justify-content-end' : 'justify-content-start' }}" id="message-container-{{ $message->id }}">
+    <div class="message-bubble {{ $isRightAligned ? 'sent' : 'received' }}">
+        @if($currentUser->role !== 'admin')
         <div class="message-dropdown dropdown">
             <i class="fa fa-chevron-down" data-bs-toggle="dropdown" aria-expanded="false"></i>
             <ul class="dropdown-menu">
                 <li><a class="dropdown-item text-danger" href="javascript:void(0)" onclick="deleteMessage({{ $message->id }})"><i class="fa fa-trash me-2"></i> Delete</a></li>
             </ul>
         </div>
+        @endif
         
         <div class="message-content">
-            @if($message->sender_id === $currentUser->id)<span class="sender-name">{{ $currentUser->name }}</span>@else<span class="sender-name">{{ $message->sender->name ?? 'Patient' }}</span>@endif @if($message->message_type == 'text')
+            <span class="sender-name">{{ $senderName }}</span>@if($message->message_type == 'text')
                 {{ $message->content }}
             @elseif($message->message_type == 'image')
                 <div class="text-center mt-1">

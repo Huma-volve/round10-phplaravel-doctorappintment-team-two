@@ -213,10 +213,12 @@
     }
 </style>
 
+@if(auth()->user()->role !== 'admin')
 <div class="doctor-session-bar px-4 py-1 bg-light border-bottom d-flex justify-content-between align-items-center">
-    <small class="text-muted"><i class="fa fa-user-md me-1"></i> Logged in as: <strong>Dr. {{ $currentUser->name }}</strong></small>
-    <small class="badge bg-soft-primary text-primary">{{ $currentUser->doctor->specialization->name ?? 'General' }}</small>
+    <small class="text-muted"><i class="fa fa-user-md me-1"></i> Logged in as: <strong>{{ $currentUser->role === 'admin' ? 'Admin' : 'Dr. ' . $currentUser->name }}</strong></small>
+    <small class="badge bg-soft-primary text-primary">{{ $currentUser->doctor?->specialization?->name ?? 'System Admin' }}</small>
 </div>
+@endif
 <div class="chat-header">
     <div class="header-user-info">
         <img src="{{ $other_user->profile_photo ? asset('storage/'.$other_user->profile_photo) : asset('assets/img/profiles/avatar-01.jpg') }}" alt="" class="chat-avatar">
@@ -237,6 +239,7 @@
     @endforeach
 </div>
 
+@if(auth()->user()->role !== 'admin')
 <div class="chat-footer">
     <div class="chat-actions-left">
         <label for="imgUpload" class="mb-0"><i class="fa fa-image"></i></label>
@@ -252,6 +255,11 @@
     
     <button class="send-circle" onclick="sendMessage()"><i class="fa fa-paper-plane"></i></button>
 </div>
+@else
+<div class="chat-footer justify-content-center">
+    <p class="text-muted mb-0"><i class="fa fa-info-circle me-1"></i> Admins can only view conversations.</p>
+</div>
+@endif
 
 <script>
     const chatMessages = document.getElementById('chatMessages');
