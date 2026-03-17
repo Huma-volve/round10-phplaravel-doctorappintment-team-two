@@ -31,6 +31,17 @@
             <li><a href="{{ route('admin.doctors.create') }}" class="sidebar-link"><i class="fa-solid fa-folder-plus"></i>
                     <p>Add Doctor</p>
                 </a></li>
+            <li>
+                <a href="#" class="sidebar-link submenu-parent"><i class="fa-solid fa-list"></i>
+                    <p>Booking <i class="fa-solid fa-chevron-right right-icon"></i></p>
+                </a>
+                <ul class="sidebar-submenu">
+                         <li><a href="{{ route('admin.booking.index') }}" class="submenu-link">Booking All</a></li>
+                         {{-- <li><a href="{{ route('admin.booking.create') }}" class="submenu-link">Add Booking</a></li> --}}
+
+                </ul>
+            </li>
+          
 @endif
 
 @if(auth()->user()->role === 'admin')
