@@ -7,6 +7,7 @@ use App\Http\Controllers\Admin\ReiewController;
 use App\Http\Controllers\AdminAuth\AuthController;
 use App\Http\Controllers\Dashboard\ChatController;
 use App\Http\Controllers\AdminDoctor\DoctorController;
+use App\Http\Controllers\Booking\BookingController;
 
 /*
 |--------------------------------------------------------------------------
@@ -143,6 +144,91 @@ Route::middleware(['admin'])->group(function () {
         Route::get('/policies/create', [PolicyController::class, 'create'])->name('policies.create');
         Route::post('/policies', [PolicyController::class, 'store'])->name('policies.store');
         Route::delete('/policies/{id}', [PolicyController::class, 'destroy'])->name('policies.destroy');
+        Route::get('/add-course', function () {
+            return view('dashboard.add-course');
+        })->name('add-course');
+
+        Route::get('/courses', function () {
+            return view('dashboard.course');
+        })->name('courses');
+
+        Route::get('/course-details', function () {
+            return view('dashboard.course-details');
+        })->name('course-details');
+
+        Route::get('/add-category', function () {
+            return view('dashboard.addCategory');
+        })->name('add-category');
+
+        Route::get('/data-table', function () {
+            return view('dashboard.data-table');
+        })->name('data-table');
+
+        Route::get('/bootstrap-table', function () {
+            return view('dashboard.table-bootstrap');
+        })->name('bootstrap-table');
+
+        Route::get('/library', function () {
+            return view('dashboard.library');
+        })->name('library');
+
+        Route::get('/department', function () {
+            return view('dashboard.department');
+        })->name('department');
+
+        Route::get('/staff', function () {
+            return view('dashboard.staff');
+        })->name('staff');
+
+        Route::get('/fees', function () {
+            return view('dashboard.fees');
+        })->name('fees');
+
+        Route::get('/form', function () {
+            return view('dashboard.form');
+        })->name('form');
+
+        /*
+        |--------------------------------------------------------------------------
+        | FAQ & Policies
+        |--------------------------------------------------------------------------
+        */
+
+        Route::prefix('admin')->group(function () {
+            Route::get('/', [FaqController::class, 'index'])->name('faqs.index');
+            Route::get('/faqs', [FaqController::class, 'create'])->name('faqs.create');
+            Route::post('/faqs', [FaqController::class, 'store'])->name('faqs.store');
+            Route::delete('/faqs/{id}', [FaqController::class, 'destroy'])->name('faqs.destroy');
+            Route::get('/policies', [PolicyController::class, 'index'])->name('policies.index');
+            Route::get('/policies/create', [PolicyController::class, 'create'])->name('policies.create');
+            Route::post('/policies', [PolicyController::class, 'store'])->name('policies.store');
+            Route::delete('/policies/{id}', [PolicyController::class, 'destroy'])->name('policies.destroy');
+        });
+
+        /*
+        |--------------------------------------------------------------------------
+        | Admin Doctors
+        |--------------------------------------------------------------------------
+        */
+
+        Route::prefix('admin/doctor')->group(function () {
+            Route::get('/', [DoctorController::class, 'index'])->name('admin.doctors.index');
+            Route::get('/create', [DoctorController::class, 'create'])->name('admin.doctors.create');
+            Route::post('/', [DoctorController::class, 'store'])->name('admin.doctors.store');
+            Route::delete('/{id}', [DoctorController::class, 'destroy'])->name('admin.doctors.destroy');
+            Route::get('/add-specialization', [DoctorController::class, 'createSpecialization'])->name('admin.doctors.create-specialization');
+            Route::post('/add-specialization', [DoctorController::class, 'storeSpecialization'])->name('admin.doctors.store-specialization');
+            Route::get('/add-clinic', [DoctorController::class, 'createClinic'])->name('admin.doctors.create-clinic');
+            Route::post('/add-clinic', [DoctorController::class, 'storeClinic'])->name('admin.doctors.store-clinic');
+        });
+
+        //BOOKING
+        Route::prefix('admin/Booking')->group(function () {
+            Route::get('/', [BookingController::class, 'index'])->name('admin.booking.index');
+            Route::get('/create', [BookingController::class, 'create'])->name('admin.booking.create');
+            //  Route::get('/', [BookingController::class, 'index'])->name('admin.booking.index');
+
+        });
     });
     Route::get('/review', [ReiewController::class, 'create'])->name('review.create');
     Route::post('/review', [ReiewController::class, 'store'])->name('review.store');

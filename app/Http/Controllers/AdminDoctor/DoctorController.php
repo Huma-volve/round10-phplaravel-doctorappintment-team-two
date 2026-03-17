@@ -87,4 +87,42 @@ class DoctorController extends Controller
         return redirect()->route('admin.doctors.index')
             ->with('success','Doctor deleted successfully');
     }
+    // create clinic
+    public function createClinic()
+    {
+        return view('clinics.clinic');
+    }
+    // store clinic
+    public function storeClinic(Request $request)
+    {
+        $data = $request->validate([
+            'name_clinic' => 'required|string|max:255',
+            'phone' => 'required|string|max:20',
+            'address' => 'required|string|max:255',
+            'latitude' => 'required|numeric',
+            'longitude' => 'required|numeric',
+        ]);
+
+        Clinic::create($data);
+    return redirect()->route('admin.doctors.create-clinic')
+        ->with('success','Clinic created successfully');
+
+    }
+    // create specialization
+    public function createSpecialization()
+    {
+        return view('specialization.specialization');
+    }
+    // store specialization
+    public function storeSpecialization(Request $request)
+    {
+        $data = $request->validate([
+            'name' => 'required|string|max:255',
+        ]);
+        Specialization::create($data);
+
+    // retun success message to diplsay it in blade 
+    return redirect()->route('admin.doctors.create-specialization')->with('success','Specialization created successfully');
+        
+    }
 }
