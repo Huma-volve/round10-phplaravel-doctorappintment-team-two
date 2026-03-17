@@ -8,9 +8,11 @@ use App\Models\Patient;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Traits\ApiResponseTrait;
 
 class ChatController extends Controller
 {
+    use ApiResponseTrait;
     public function index()
     {
         //display all chats for the authenticated
@@ -22,7 +24,7 @@ class ChatController extends Controller
             $query->where('user_id', $userId);
         })->with(['patient:id,user_id', 'patient.user:id,name,email', 'doctor:id,user_id', 'doctor.user:id,name,email', 'messages.sender'])
             ->get();
-        return response()->json($chats);
+        return $this->apiResponse($chats, 'Chats fetched successfully');
     }
 
     public function create()
@@ -41,15 +43,11 @@ class ChatController extends Controller
         $doctor  = Doctor::findOrFail($data['doctor_id']);
 
         if ($patient->user->role !== 'patient') {
-            return response()->json([
-                'message' => 'Selected patient_id is not a patient.'
-            ], 403);
+            return $this->errorResponse('Selected patient_id is not a patient.', 403);
         }
 
         if ($doctor->user->role !== 'doctor') {
-            return response()->json([
-                'message' => 'Selected doctor_id is not a doctor.'
-            ], 403);
+            return $this->errorResponse('Selected doctor_id is not a doctor.', 403);
         }
 
         $existingChat = Chat::where('patient_id', $patient->id)
@@ -57,10 +55,7 @@ class ChatController extends Controller
             ->first();
 
         if ($existingChat) {
-            return response()->json([
-                'message' => 'Chat already exists.',
-                'chat' => $existingChat
-            ], 200);
+            return $this->apiResponse($existingChat, 'Chat already exists.');
         }
 
         $chat = Chat::create($data);
@@ -70,10 +65,7 @@ class ChatController extends Controller
             'last_read_at' => now()
         ]);
 
-        return response()->json([
-            'message' => 'Chat created successfully',
-            'chat' => $chat
-        ], 201);
+        return $this->apiResponse($chat, 'Chat created successfully', 201);
     }
 
 
@@ -92,7 +84,7 @@ class ChatController extends Controller
             })
             ->firstOrFail();
 
-        return response()->json($chat);
+        return $this->apiResponse($chat, 'Chat details fetched successfully');
     }
 
 
@@ -122,9 +114,7 @@ class ChatController extends Controller
         // Also update the pivot for legacy support
         DB::table('chat_user')->where('chat_id', $chat->id)->where('user_id', $user->id)
             ->update(['last_read_at' => now()]);
-        return response()->json([
-            'message' => 'Chat marked as read'
-        ]);
+        return $this->apiResponse(null, 'Chat marked as read');
     }
 
     public function unreadMessagesCount($id)
@@ -133,18 +123,14 @@ class ChatController extends Controller
         $chat = Chat::with(['patient', 'doctor'])->findOrFail($id);
         // Authenticate the user is in this chat
         if ($userId !== $chat->patient->user_id && $userId !== $chat->doctor->user_id) {
-            return response()->json([
-                'message' => 'User not part of this chat'
-            ], 403);
+            return $this->errorResponse('User not part of this chat', 403);
         }
         // Count messages in this specific chat where is_read is false and the authenticated user did NOT send it
         $unreadCount = $chat->messages()
             ->where('sender_id', '!=', $userId)
             ->where('is_read', false)
             ->count();
-        return response()->json([
-            'unread_messages_count' => $unreadCount
-        ]);
+        return $this->apiResponse(['unread_messages_count' => $unreadCount], 'Unread messages count fetched successfully');
     }
 
     // Toggle favorite status of a chat for the authenticated user
@@ -176,10 +162,7 @@ class ChatController extends Controller
                 ->update(['is_favorite' => $newValue, 'updated_at' => now()]);
         }
         
-        return response()->json([
-            'message' => 'Favorite status updated',
-            'is_favorite' => $newValue
-        ]);
+        return $this->apiResponse(['is_favorite' => $newValue], 'Favorite status updated');
     }
     public function allFavoriteChats()
     {
@@ -189,7 +172,7 @@ class ChatController extends Controller
             ->with(['patient:id,user_id', 'patient.user:id,name,email', 'doctor:id,user_id', 'doctor.user:id,name,email', 'messages.sender'])
             ->get();
 
-        return response()->json($favoriteChats);
+        return $this->apiResponse($favoriteChats, 'Favorite chats fetched successfully');
     }
     public function destroy(string $id)
     {
@@ -206,8 +189,6 @@ class ChatController extends Controller
 
         $chat->delete();
 
-        return response()->json([
-            'message' => 'Chat deleted successfully'
-        ]);
+        return $this->apiResponse(null, 'Chat deleted successfully');
     }
 }

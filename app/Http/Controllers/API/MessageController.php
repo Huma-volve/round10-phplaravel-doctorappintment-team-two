@@ -10,9 +10,12 @@ use App\Models\Message;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use App\Traits\ApiResponseTrait;
 
 class MessageController extends Controller
 {
+    use ApiResponseTrait;
+
     public function index()
     {
         $userId = auth()->id();
@@ -28,7 +31,8 @@ class MessageController extends Controller
             ->whereIn('chat_id', $chatIds)
             ->latest()
             ->paginate(50); // Using pagination for better performance
-        return response()->json([
+
+        return $this->apiResponse([
             'messages' => $messages->items(),
             'pagination' => [
                 'total' => $messages->total(),
@@ -36,7 +40,7 @@ class MessageController extends Controller
                 'current_page' => $messages->currentPage(),
                 'last_page' => $messages->lastPage(),
             ]
-        ], 200);
+        ], 'Messages fetched successfully');
     }
 
 
@@ -62,9 +66,7 @@ class MessageController extends Controller
         } elseif ($chat->doctor && $chat->doctor->user_id === $user->id) {
             $senderType = 'doctor';
         } else {
-            return response()->json([
-                'message' => 'You are not part of this chat.'
-            ], 403);
+            return $this->errorResponse('You are not part of this chat.', 403);
         }
 
         // Handle the content depending on message type
@@ -73,9 +75,7 @@ class MessageController extends Controller
         } else {
             // content is an uploaded file
             if (!$request->hasFile('content')) {
-                return response()->json([
-                    'message' => 'A file is required for message type: ' . $request->message_type
-                ], 422);
+                return $this->errorResponse('A file is required for message type: ' . $request->message_type, 422);
             }
             $content = $request->file('content')->store('messages', 'public');
             $content = Storage::url($content);
@@ -92,7 +92,8 @@ class MessageController extends Controller
 
         $message->load('sender');
         broadcast(new MessageSent($message))->toOthers();
-        return new MessageResource($message);
+        
+        return $this->apiResponse(new MessageResource($message), 'Message sent successfully', 201);
     }
 
 

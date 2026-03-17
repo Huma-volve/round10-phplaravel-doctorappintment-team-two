@@ -1,5 +1,4 @@
 <?php
-
 use App\Http\Controllers\API\ChatController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ReviewController;
