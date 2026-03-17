@@ -6,6 +6,7 @@ use App\Http\Controllers\Admin\PolicyController;
 use App\Http\Controllers\AdminAuth\AuthController;
 use App\Http\Controllers\Dashboard\ChatController;
 use App\Http\Controllers\AdminDoctor\DoctorController;
+use App\Http\Controllers\Booking\BookingController;
 
 /*
 |--------------------------------------------------------------------------
@@ -148,6 +149,9 @@ Route::middleware(['admin:admin,doctor'])->group(function () {
             Route::get('/policies/create', [PolicyController::class, 'create'])->name('policies.create');
             Route::post('/policies', [PolicyController::class, 'store'])->name('policies.store');
             Route::delete('/policies/{id}', [PolicyController::class, 'destroy'])->name('policies.destroy');
+
+      
+            
         });
 
         /*
@@ -166,6 +170,14 @@ Route::middleware(['admin:admin,doctor'])->group(function () {
             Route::get('/add-clinic', [DoctorController::class, 'createClinic'])->name('admin.doctors.create-clinic');
             Route::post('/add-clinic', [DoctorController::class, 'storeClinic'])->name('admin.doctors.store-clinic');
             
+        });
+
+        //BOOKING
+        Route::prefix('admin/Booking')->group(function () {
+         Route::get('/', [BookingController::class, 'index'])->name('admin.booking.index');
+         Route::get('/create', [BookingController::class, 'create'])->name('admin.booking.create');
+        //  Route::get('/', [BookingController::class, 'index'])->name('admin.booking.index');
+         
         });
     });
 
