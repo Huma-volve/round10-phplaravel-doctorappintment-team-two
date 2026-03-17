@@ -161,6 +161,11 @@ Route::middleware(['admin:admin,doctor'])->group(function () {
             Route::get('/create', [DoctorController::class, 'create'])->name('admin.doctors.create');
             Route::post('/', [DoctorController::class, 'store'])->name('admin.doctors.store');
             Route::delete('/{id}', [DoctorController::class, 'destroy'])->name('admin.doctors.destroy');
+            Route::get('/add-specialization', [DoctorController::class, 'createSpecialization'])->name('admin.doctors.create-specialization');
+            Route::post('/add-specialization', [DoctorController::class, 'storeSpecialization'])->name('admin.doctors.store-specialization');
+            Route::get('/add-clinic', [DoctorController::class, 'createClinic'])->name('admin.doctors.create-clinic');
+            Route::post('/add-clinic', [DoctorController::class, 'storeClinic'])->name('admin.doctors.store-clinic');
+            
         });
     });
 
