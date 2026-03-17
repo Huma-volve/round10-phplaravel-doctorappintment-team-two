@@ -13,13 +13,17 @@ class AdminMiddleware
      *
      * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
      */
-    public function handle(Request $request, Closure $next): Response
+    public function handle(Request $request, Closure $next, ...$roles): Response
     {
-        if(!auth()->check()){
+        if (!auth()->check()) {
             return redirect()->route('show-login');
         }
 
-        if(auth()->user()->role !== 'admin'){
+        if (empty($roles)) {
+            $roles = ['admin'];
+        }
+
+        if (!in_array(auth()->user()->role, $roles)) {
             abort(403);
         }
 
