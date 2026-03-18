@@ -31,7 +31,6 @@
             <li><a href="{{ route('admin.doctors.create') }}" class="sidebar-link"><i class="fa-solid fa-folder-plus"></i>
                     <p>Add Doctor</p>
                 </a></li>
-            @endif
             <!-- add link to form to add clicnics -->
             <li><a href="{{ route('admin.doctors.create-clinic') }}" class="sidebar-link"><i class="fa-solid fa-folder-plus"></i>
                     <p>Add Clinic</p>
@@ -63,6 +62,10 @@
         <li><a href="{{ route('chat.index') }}" class="sidebar-link"><i class="fa-solid fa-comments"></i>
                 <p>Chat</p>
             </a></li>
+        <li><a href="{{ route('review.create') }}" class="sidebar-link"><i class="fa-solid fa-clipboard-check"></i>
+                <p>Review</p>
+            </a></li>
+
 
         @if(auth()->user()->role === 'admin')
         <!-- Pages -->
