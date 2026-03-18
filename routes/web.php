@@ -10,6 +10,7 @@ use App\Http\Controllers\AdminDoctor\DoctorController;
 use App\Http\Controllers\Dashboard\UserController;
 use App\Http\Controllers\Dashboard\HomeController;
 use App\Http\Controllers\Booking\BookingController;
+use App\Http\Controllers\Admin\ReviewController;
 
 /*
 |--------------------------------------------------------------------------
@@ -246,7 +247,8 @@ Route::middleware(['admin'])->group(function () {
             Route::put('/{id}/update-clinic', [DoctorController::class, 'updateClinic'])->name('admin.doctors.update-clinic');
             Route::delete('/{id}/delete-clinic', [DoctorController::class, 'destroyClinic'])->name('admin.doctors.destroy-clinic');
         });
-
+   Route::get('/review', [ReviewController::class, 'create'])->name('review.create');
+    Route::post('/review', [ReviewController::class, 'store'])->name('review.store');
         /*
         |--------------------------------------------------------------------------
         | Profile Management
