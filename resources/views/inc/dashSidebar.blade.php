@@ -22,6 +22,7 @@
 <li><a href="{{ route('admin.users.index') }}" class="sidebar-link"><i class="fa-solid fa-users"></i>
                     <p>Users</p>
                 </a></li>
+<<<<<<< HEAD
            <!-- Doctors -->
             <li>
                 <a href="#" class="sidebar-link submenu-parent"><i class="fa-solid fa-list"></i>
@@ -52,6 +53,19 @@
                     <li><a href="{{ route('admin.doctors.create-specialization') }}" class="submenu-link">Add Specialization</a></li>
                 </ul>
                 </li>
+=======
+            <li>
+                <a href="#" class="sidebar-link submenu-parent"><i class="fa-solid fa-list"></i>
+                    <p>Booking <i class="fa-solid fa-chevron-right right-icon"></i></p>
+                </a>
+                <ul class="sidebar-submenu">
+                         <li><a href="{{ route('admin.booking.index') }}" class="submenu-link">Booking All</a></li>
+                         {{-- <li><a href="{{ route('admin.booking.create') }}" class="submenu-link">Add Booking</a></li> --}}
+
+                </ul>
+            </li>
+          
+>>>>>>> f2d848d19b17f270b005a0200daed2d57d8690a4
 @endif
 
             <li><a href="{{ route('chat.index') }}" class="sidebar-link"><i class="fa-solid fa-comments"></i><p>Chat</p></a></li>
