@@ -18,6 +18,26 @@
             <li><a href="{{ route('dashboard.index') }}" class="sidebar-link active"><i class="fa-solid fa-house"></i>
                     <p>Dashboard</p>
                 </a></li>
+            <!-- <li><a href="{{ route('courses') }}" class="sidebar-link"><i class="fa-brands fa-discourse"></i>
+                    <p>Courses</p>
+                </a></li>
+            <li><a href="{{ route('students') }}" class="sidebar-link"><i class="fa-solid fa-user"></i>
+                    <p>Students</p>
+                </a></li> -->
+            @if(auth()->user()->role === 'admin')
+            <li><a href="{{ route('admin.doctors.index') }}" class="sidebar-link"><i class="fa-solid fa-chalkboard-user"></i>
+                    <p>Doctors</p>
+                </a></li>
+            <li><a href="{{ route('admin.doctors.create') }}" class="sidebar-link"><i class="fa-solid fa-folder-plus"></i>
+                    <p>Add Doctor</p>
+                </a></li>
+            <!-- add link to form to add clicnics -->
+            <li><a href="{{ route('admin.doctors.create-clinic') }}" class="sidebar-link"><i class="fa-solid fa-folder-plus"></i>
+                    <p>Add Clinic</p>
+                </a></li>
+            <!-- add link to add specializations -->
+            <li><a href="{{ route('admin.doctors.create-specialization') }}" class="sidebar-link"><i class="fa-solid fa-folder-plus"></i>
+                    <p>Add Specialization</p>
 @if(auth()->user()->role === 'admin')
 <li><a href="{{ route('admin.users.index') }}" class="sidebar-link"><i class="fa-solid fa-users"></i>
                     <p>Users</p>
@@ -57,42 +77,81 @@
                     <p>Booking <i class="fa-solid fa-chevron-right right-icon"></i></p>
                 </a>
                 <ul class="sidebar-submenu">
-                         <li><a href="{{ route('admin.booking.index') }}" class="submenu-link">Booking All</a></li>
-                         {{-- <li><a href="{{ route('admin.booking.create') }}" class="submenu-link">Add Booking</a></li> --}}
+                    <li><a href="{{ route('admin.booking.index') }}" class="submenu-link">Booking All</a></li>
+                    {{-- <li><a href="{{ route('admin.booking.create') }}" class="submenu-link">Add Booking</a>
+            </li> --}}
 
-                </ul>
-            </li>
-          
-@endif
+        </ul>
+        </li>
 
+        @endif
+
+        @if(auth()->user()->role === 'admin')
+        <!-- <li><a href="{{ route('library') }}" class="sidebar-link"><i class="fa-solid fa-book"></i><p>Library</p></a></li>
+            <li><a href="{{ route('department') }}" class="sidebar-link"><i class="fa-solid fa-building"></i><p>Department</p></a></li>
+            <li><a href="{{ route('staff') }}" class="sidebar-link"><i class="fa-solid fa-users"></i><p>Staff</p></a></li>
+            <li><a href="{{ route('fees') }}" class="sidebar-link"><i class="fa-solid fa-dollar-sign"></i><p>Fees</p></a></li> -->
+        @endif
+        <li><a href="{{ route('chat.index') }}" class="sidebar-link"><i class="fa-solid fa-comments"></i>
+                <p>Chat</p>
+            </a></li>
+        <li><a href="{{ route('review.create') }}" class="sidebar-link"><i class="fa-solid fa-clipboard-check"></i>
+                <p>Review</p>
+            </a></li>
             <li><a href="{{ route('chat.index') }}" class="sidebar-link"><i class="fa-solid fa-comments"></i><p>Chat</p></a></li>
 
-@if(auth()->user()->role === 'admin')
-            <!-- Pages -->
-            <li>
+
+        @if(auth()->user()->role === 'admin')
+        <!-- Pages -->
+        <li>
+            <a href="#" class="sidebar-link submenu-parent"><i class="fa-solid fa-list"></i>
+                <p>Admin <i class="fa-solid fa-chevron-right right-icon"></i></p>
+            </a>
+            <ul class="sidebar-submenu">
+                <li><a href="{{ route('faqs.create') }}" class="submenu-link">Add FAQs</a></li>
+                <li><a href="{{ route('faqs.index') }}" class="submenu-link">FAQs</a></li>
+                <li><a href="{{ route('policies.create') }}" class="submenu-link">Add policy</a></li>
+                <li><a href="{{ route('policies.index') }}" class="submenu-link">policies</a></li>
+
+            </ul>
+        </li>
+        @endif
+        <li>
+            <a href="#" class="sidebar-link submenu-parent"><i class="fa-solid fa-list"></i>
+                <p>Auth <i class="fa-solid fa-chevron-right right-icon"></i></p>
+            </a>
+            <ul class="sidebar-submenu">
+                <li>
+
+                    @guest
+                    <a href="{{ route('show-login') }}" class="submenu-link">Login</a>
+                    @endguest
+
+                    @auth
+                    <form action="{{ route('logout-dash') }}" method="POST">
+                        @csrf
+                        <button type="submit" class="submenu-link border-0 bg-transparent">
+                            Logout
+                        </button>
+                    </form>
+                    @endauth
+
+                </li>
+                <!-- <li><a href="{{ route('signup-dash') }}" class="submenu-link">Register</a></li>
+                    <li><a href="{{ route('forgot-password-dash') }}" class="submenu-link">Forgot password</a></li>
+                    <li><a href="{{ route('404-dash') }}" class="submenu-link">404 page</a></li>
+                    <li><a href="{{ route('500-dash') }}" class="submenu-link">500 page</a></li> -->
+            </ul>
+        </li>
+
+        <!-- Tables -->
+        <!-- <li>
                 <a href="#" class="sidebar-link submenu-parent"><i class="fa-solid fa-list"></i>
-                    <p>Admin <i class="fa-solid fa-chevron-right right-icon"></i></p>
+                    <p>Table <i class="fa-solid fa-chevron-right right-icon"></i></p>
                 </a>
                 <ul class="sidebar-submenu">
-                    <li><a href="{{ route('faqs.create') }}" class="submenu-link">Add FAQs</a></li>
-                    <li><a href="{{ route('faqs.index') }}" class="submenu-link">FAQs</a></li>
-                    <li><a href="{{ route('policies.create') }}" class="submenu-link">Add policy</a></li>
-                    <li><a href="{{ route('policies.index') }}" class="submenu-link">policies</a></li>
-
-                </ul>
-            </li>
-@endif
-            <li>
-                <a href="#" class="sidebar-link submenu-parent"><i class="fa-solid fa-list"></i>
-                    <p>Auth <i class="fa-solid fa-chevron-right right-icon"></i></p>
-                </a>
-                <ul class="sidebar-submenu">
-                 <li>
-
-    @guest
-        <a href="{{ route('show-login') }}" class="submenu-link">Login</a>
-    @endguest
-
+                    <li><a href="{{ route('bootstrap-table') }}" class="submenu-link">Bootstrap</a></li>
+                    <li><a href="{{ route('data-table') }}" class="submenu-link">DataTable</a></li>
     @auth
         <form action="{{ route('logout-dash') }}" method="POST" onsubmit="return confirm('Are you sure you want to logout?')">
             @csrf
@@ -109,6 +168,15 @@
                 </ul>
             </li>
 
+        <!-- Components -->
+        <!-- <li>
+                <a href="#" class="sidebar-link submenu-parent"><i class="fa-solid fa-list"></i>
+                    <p>Components <i class="fa-solid fa-chevron-right right-icon"></i></p>
+                </a>
+                <ul class="sidebar-submenu">
+                    <li><a href="{{ route('form') }}" class="submenu-link">Form Element</a></li>
+                </ul>
+            </li> -->
         </ul>
     </div>
 </div>
