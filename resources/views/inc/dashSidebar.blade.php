@@ -38,7 +38,40 @@
             <!-- add link to add specializations -->
             <li><a href="{{ route('admin.doctors.create-specialization') }}" class="sidebar-link"><i class="fa-solid fa-folder-plus"></i>
                     <p>Add Specialization</p>
+@if(auth()->user()->role === 'admin')
+<li><a href="{{ route('admin.users.index') }}" class="sidebar-link"><i class="fa-solid fa-users"></i>
+                    <p>Users</p>
                 </a></li>
+           <!-- Doctors -->
+            <li>
+                <a href="#" class="sidebar-link submenu-parent"><i class="fa-solid fa-list"></i>
+                    <p>Doctors <i class="fa-solid fa-chevron-right right-icon"></i></p>
+                </a>
+                <ul class="sidebar-submenu">
+                    <li><a href="{{ route('admin.doctors.index') }}" class="submenu-link">All Doctors</a></li>
+                    <li><a href="{{ route('admin.doctors.create') }}" class="submenu-link">Add Doctor</a></li>
+                </ul>
+            </li>
+              <!-- clinics -->
+               <li>
+                    <a href="#" class="sidebar-link submenu-parent"><i class="fa-solid fa-list"></i>
+                    <p>Clinics <i class="fa-solid fa-chevron-right right-icon"></i></p>
+                </a>
+                <ul class="sidebar-submenu">
+                    <li><a href="{{ route('admin.doctors.index-clinic') }}" class="submenu-link">All Clinics</a></li>
+                    <li><a href="{{ route('admin.doctors.create-clinic') }}" class="submenu-link">Add Clinic</a></li>
+                </ul>
+               </li>
+               <!-- Specialization -->
+                <li>
+                    <a href="#" class="sidebar-link submenu-parent"><i class="fa-solid fa-list"></i>
+                    <p>Specializations <i class="fa-solid fa-chevron-right right-icon"></i></p>
+                </a>
+                <ul class="sidebar-submenu">
+                    <li><a href="{{ route('admin.doctors.index-specialization') }}" class="submenu-link">All Specializations</a></li>
+                    <li><a href="{{ route('admin.doctors.create-specialization') }}" class="submenu-link">Add Specialization</a></li>
+                </ul>
+                </li>
             <li>
                 <a href="#" class="sidebar-link submenu-parent"><i class="fa-solid fa-list"></i>
                     <p>Booking <i class="fa-solid fa-chevron-right right-icon"></i></p>
@@ -65,6 +98,7 @@
         <li><a href="{{ route('review.create') }}" class="sidebar-link"><i class="fa-solid fa-clipboard-check"></i>
                 <p>Review</p>
             </a></li>
+            <li><a href="{{ route('chat.index') }}" class="sidebar-link"><i class="fa-solid fa-comments"></i><p>Chat</p></a></li>
 
 
         @if(auth()->user()->role === 'admin')
@@ -118,8 +152,21 @@
                 <ul class="sidebar-submenu">
                     <li><a href="{{ route('bootstrap-table') }}" class="submenu-link">Bootstrap</a></li>
                     <li><a href="{{ route('data-table') }}" class="submenu-link">DataTable</a></li>
+    @auth
+        <form action="{{ route('logout-dash') }}" method="POST" onsubmit="return confirm('Are you sure you want to logout?')">
+            @csrf
+            <button type="submit" class="submenu-link border-0 bg-transparent">
+                Logout
+            </button>
+        </form>
+
+
+    @endauth
+
+</li>
+
                 </ul>
-            </li> -->
+            </li>
 
         <!-- Components -->
         <!-- <li>

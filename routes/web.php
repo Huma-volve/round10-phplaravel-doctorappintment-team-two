@@ -7,6 +7,8 @@ use App\Http\Controllers\Admin\ReiewController;
 use App\Http\Controllers\AdminAuth\AuthController;
 use App\Http\Controllers\Dashboard\ChatController;
 use App\Http\Controllers\AdminDoctor\DoctorController;
+use App\Http\Controllers\Dashboard\UserController;
+use App\Http\Controllers\Dashboard\HomeController;
 use App\Http\Controllers\Booking\BookingController;
 
 /*
@@ -109,6 +111,7 @@ Route::middleware(['admin'])->group(function () {
         return view('dashboard.form');
     })->name('form');
 
+    Route::get('/', [HomeController::class, 'index'])->name('dashboard.index')->middleware(['auth', 'admin:admin,doctor']);
 
     /*
     |--------------------------------------------------------------------------
@@ -188,6 +191,15 @@ Route::middleware(['admin'])->group(function () {
             return view('dashboard.form');
         })->name('form');
 
+
+    // users routes
+    Route::prefix('admin')->group(function () {
+        Route::get('/users',[UserController::class,'index'])->name('admin.users.index');
+        // Route::get('/users/{id}/edit',[UserController::class,'edit'])->name('admin.users.edit');
+        // Route::put('/users/{id}',[UserController::class,'update'])->name('admin.users.update');
+        Route::delete('/users/{id}',[UserController::class,'destroy'])->name('admin.users.destroy');
+    });
+
         /*
         |--------------------------------------------------------------------------
         | FAQ & Policies
@@ -212,16 +224,36 @@ Route::middleware(['admin'])->group(function () {
         */
 
         Route::prefix('admin/doctor')->group(function () {
+            // doctor routes
             Route::get('/', [DoctorController::class, 'index'])->name('admin.doctors.index');
             Route::get('/create', [DoctorController::class, 'create'])->name('admin.doctors.create');
             Route::post('/', [DoctorController::class, 'store'])->name('admin.doctors.store');
+            Route::get('/{id}/edit', [DoctorController::class, 'edit'])->name('admin.doctors.edit');
+            Route::put('/{id}', [DoctorController::class, 'update'])->name('admin.doctors.update');
             Route::delete('/{id}', [DoctorController::class, 'destroy'])->name('admin.doctors.destroy');
+            // specialization routes
+            Route::get('/specialization', [DoctorController::class, 'indexSpecialization'])->name('admin.doctors.index-specialization');
             Route::get('/add-specialization', [DoctorController::class, 'createSpecialization'])->name('admin.doctors.create-specialization');
             Route::post('/add-specialization', [DoctorController::class, 'storeSpecialization'])->name('admin.doctors.store-specialization');
+            Route::get('/{id}/edit-specialization', [DoctorController::class, 'editSpecialization'])->name('admin.doctors.edit-specialization');
+            Route::put('/{id}/update-specialization', [DoctorController::class, 'updateSpecialization'])->name('admin.doctors.update-specialization');
+            Route::delete('/{id}/delete-specialization', [DoctorController::class, 'destroySpecialization'])->name('admin.doctors.destroy-specialization');
+            // clinic routes
+            Route::get('/clinic', [DoctorController::class, 'indexClinic'])->name('admin.doctors.index-clinic');
             Route::get('/add-clinic', [DoctorController::class, 'createClinic'])->name('admin.doctors.create-clinic');
             Route::post('/add-clinic', [DoctorController::class, 'storeClinic'])->name('admin.doctors.store-clinic');
+            Route::get('/{id}/edit-clinic', [DoctorController::class, 'editClinic'])->name('admin.doctors.edit-clinic');
+            Route::put('/{id}/update-clinic', [DoctorController::class, 'updateClinic'])->name('admin.doctors.update-clinic');
+            Route::delete('/{id}/delete-clinic', [DoctorController::class, 'destroyClinic'])->name('admin.doctors.destroy-clinic');
         });
 
+        /*
+        |--------------------------------------------------------------------------
+        | Profile Management
+        |--------------------------------------------------------------------------
+        */
+        Route::get('/profile', [\App\Http\Controllers\Dashboard\ProfileController::class, 'edit'])->name('profile.edit');
+        Route::put('/profile', [\App\Http\Controllers\Dashboard\ProfileController::class, 'update'])->name('profile.update');
         //BOOKING
         Route::prefix('admin/Booking')->group(function () {
             Route::get('/', [BookingController::class, 'index'])->name('admin.booking.index');

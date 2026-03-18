@@ -1,5 +1,7 @@
 @extends('layouts.dashboard')
 
+@section('title', 'Doctors')
+
 @section('content')
 <div class="row">
     <div class="col-12">
@@ -15,6 +17,11 @@
     </div>
     <!--end col-->
 </div>
+@if(session('success'))
+<div class="alert alert-success">
+    {{ session('success') }}
+</div>
+@endif
 <div class="mt-4">
     <div class="card shadow-sm border-0">
         <div class="card-body p-0">
@@ -43,7 +50,7 @@
                             <td>{{ $doctor->user->mobile_number }}</td>
                             <td>{{ $doctor->user->phone_code }}</td>
                             <td class="text-center">
-                                <form action="" method="POST"
+                                <form action="{{ route('admin.doctors.destroy', $doctor->id) }}" method="POST"
                                     onsubmit="return confirm('Are you sure you want to delete this doctor?');">
                                     @csrf
                                     @method('DELETE')
@@ -53,7 +60,7 @@
                                 </form>
                             </td>
                             <td class="text-center">
-                                <a href="" class="btn btn-sm btn-primary">
+                                <a href="{{ route('admin.doctors.edit', $doctor->id) }}" class="btn btn-sm btn-primary">
                                     <i class="fa-solid fa-edit"></i>
                                 </a>
                             </td>
