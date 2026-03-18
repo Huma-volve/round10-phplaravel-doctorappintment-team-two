@@ -115,6 +115,15 @@
             </ul>
         </li>
 
+        <!-- Components -->
+        <!-- <li>
+                <a href="#" class="sidebar-link submenu-parent"><i class="fa-solid fa-list"></i>
+                    <p>Components <i class="fa-solid fa-chevron-right right-icon"></i></p>
+                </a>
+                <ul class="sidebar-submenu">
+                    <li><a href="{{ route('form') }}" class="submenu-link">Form Element</a></li>
+                </ul>
+            </li> -->
         </ul>
     </div>
 </div>
