@@ -8,10 +8,10 @@
         </div>
         <div class="d-none d-md-block d-lg-block">
             <div class="input-group flex-nowrap">
-                <span class="input-group-text bg-white" id="addon-wrapping">
+                <!-- <span class="input-group-text bg-white" id="addon-wrapping">
                     <i class="fa-solid search-icon fa-magnifying-glass text-color-1"></i>
-                </span>
-                <input type="text" class="form-control search-input border-l-none ps-0" placeholder="Search anything">
+                </span> -->
+                <!-- <input type="text" class="form-control search-input border-l-none ps-0" placeholder="Search anything"> -->
             </div>
         </div>
     </div>
@@ -162,28 +162,32 @@
             </li>
 
             <!-- User Profile -->
-           <li class="nav-item dropdown user-profile">
-    <a href="#" class="d-flex align-items-center dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-        <span class="user-avatar me-0 me-lg-3">A</span>
-        <div class="d-none d-lg-block">
-            <span class="d-block auth-role">Administrator</span>
-            <span class="auth-name">Adin Lauren</span>
-            <span class="ms-2 text-color-1 text-size-sm"><i class="fa-solid fa-angle-down"></i></span>
-        </div>
-    </a>
+            <li class="nav-item dropdown user-profile">
+                <a href="#" class="d-flex align-items-center dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                    @if(auth()->user()->profile_photo)
+                        <img src="{{ asset('storage/' . auth()->user()->profile_photo) }}" alt="Avatar" class="rounded-circle me-0 me-lg-3" style="width: 40px; height: 40px; object-fit: cover;">
+                    @else
+                        <span class="user-avatar me-0 me-lg-3">{{ strtoupper(substr(auth()->user()->name, 0, 1)) }}</span>
+                    @endif
+                    <div class="d-none d-lg-block">
+                        <span class="d-block auth-role text-capitalize">{{ auth()->user()->role }}</span>
+                        <span class="auth-name">{{ auth()->user()->name }}</span>
+                        <span class="ms-2 text-color-1 text-size-sm"><i class="fa-solid fa-angle-down"></i></span>
+                    </div>
+                </a>
 
-    <ul class="dropdown-menu mt-3 dropdown-menu-end">
-        <li><a class="dropdown-item" href="#">Profile</a></li>
-        <li><a class="dropdown-item" href="#">Settings</a></li>
-        <li><hr class="dropdown-divider"></li>
-        <li class="mx-3">
-            <form action="{{ route('logout') }}" method="POST">
-                @csrf
-                <button type="submit" class="dropdown-item text-danger">Logout</button>
-            </form>
-        </li>
-    </ul>
-</li>
+                <ul class="dropdown-menu mt-3 dropdown-menu-end">
+                    <li><a class="dropdown-item" href="{{ route('profile.edit') }}">Profile</a></li>
+                    <!-- <li><a class="dropdown-item" href="#">Settings</a></li> -->
+                    <li><hr class="dropdown-divider"></li>
+                    <li class="mx-3">
+                        <form action="{{ route('logout-dash') }}" method="POST" onsubmit="return confirm('Are you sure you want to logout?')">
+                            @csrf
+                            <button type="submit" class="dropdown-item text-danger">Logout</button>
+                        </form>
+                    </li>
+                </ul>
+            </li>
 
         </ul>
     </div>
