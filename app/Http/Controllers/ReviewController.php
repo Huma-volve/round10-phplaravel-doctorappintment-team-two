@@ -13,13 +13,9 @@ class ReviewController extends Controller
     use TraitReview;
     public function index()
     {
-
-
         $review = Review::with('doctor')->get();
-
         return $this->apiResponse($review, 'Categories fetched successfully', 200);
     }
-
     public function show($id)
     {
         $Review = Review::find($id);
@@ -29,20 +25,15 @@ class ReviewController extends Controller
         return $this->apiresponse(null, 'not found', 401);
     }
 
-
     /**
      * Create a new category
      */
     public function store(Request $request)
     {
-
         try {
             $validated = $request->validate(Review::rules());
 
-
-
             $review = Review::create($validated);
-
 
 
 

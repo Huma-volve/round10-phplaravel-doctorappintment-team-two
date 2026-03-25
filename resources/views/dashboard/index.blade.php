@@ -1,269 +1,234 @@
 @extends('layouts.dashboard')
+@section('title', 'Dashboard')
 @section('content')
-<div class="row">
+<div class="row mb-4">
     <div class="col-12">
-        <div class="d-flex align-items-lg-center flex-column flex-md-row  flex-lg-row  mt-3">
-            <div class="flex-grow-1">
-                <h3 class="mb-2 text-color-2">Dashboard</h3>
+        <div class="d-flex align-items-center justify-content-between mt-3">
+            <div>
+                <h3 class="mb-1 text-color-2 fw-bold">Dashboard Overview</h3>
+                <p class="text-muted small mb-0">Welcome back! Here's what's happening today.</p>
             </div>
-            <div class="mt-3 mt-lg-0">
+            <div class="d-none d-md-block">
+                <span class="badge bg-light text-color-1 p-2 border">
+                    <i class="far fa-calendar-alt me-1"></i> {{ date('D, M d, Y') }}
+                </span>
             </div>
-        </div><!-- end card header -->
+        </div>
     </div>
-    <!--end col-->
 </div>
 
 <div class="row">
-    <!-- Total Students Card -->
+    <!-- Total Users -->
     <div class="col-12 col-md-6 col-lg-3 mb-4">
-        <div class="stats-card">
-            <div class="d-flex justify-content-between align-items-start">
+        <div class="stats-card p-4 bg-white shadow-sm border-0 h-100" style="border-radius: 15px; border-left: 5px solid #7256C5 !important;">
+            <div class="d-flex justify-content-between align-items-center">
                 <div>
-                    <div class="stats-label">Total Students</div>
-                    <div class="stats-value">1,250</div>
+                    <p class="text-muted small fw-bold text-uppercase mb-1">Total Users</p>
+                    <h2 class="fw-bold mb-0 text-color-2">{{ $users->count() }}</h2>
                 </div>
-                <div class="icon-wrapper icon-purple">
-                    <i class="fas fa-users"></i>
+                <div class="icon-wrapper icon-purple rounded-circle p-3 bg-light-purple text-purple">
+                    <i class="fas fa-users fa-lg"></i>
                 </div>
+            </div>
+            <div class="mt-3">
+                <span class="text-success small fw-bold"><i class="fas fa-arrow-up me-1"></i> Active Platform</span>
             </div>
         </div>
     </div>
-    <!-- Total Courses Card -->
+    <!-- Total Patients -->
     <div class="col-12 col-md-6 col-lg-3 mb-4">
-        <div class="stats-card">
-            <div class="d-flex justify-content-between align-items-start">
+        <div class="stats-card p-4 bg-white shadow-sm border-0 h-100" style="border-radius: 15px; border-left: 5px solid #FD4E5D !important;">
+            <div class="d-flex justify-content-between align-items-center">
                 <div>
-                    <div class="stats-label">Total Courses</div>
-                    <div class="stats-value">45</div>
+                    <p class="text-muted small fw-bold text-uppercase mb-1">Total Patients</p>
+                    <h2 class="fw-bold mb-0 text-color-2">{{ $patientsCount }}</h2>
                 </div>
-                <div class="icon-wrapper icon-red">
-                    <i class="fas fa-play-circle"></i>
+                <div class="icon-wrapper icon-red rounded-circle p-3 bg-light-red text-red">
+                    <i class="fas fa-user-injured fa-lg"></i>
                 </div>
+            </div>
+            <div class="mt-3">
+                <span class="text-primary small fw-bold">Recent Signups</span>
             </div>
         </div>
     </div>
-    {{-- total of trainers --}}
+    <!-- Total Doctors -->
     <div class="col-12 col-md-6 col-lg-3 mb-4">
-        <div class="stats-card">
-            <div class="d-flex justify-content-between align-items-start">
+        <div class="stats-card p-4 bg-white shadow-sm border-0 h-100" style="border-radius: 15px; border-left: 5px solid #43A9D4 !important;">
+            <div class="d-flex justify-content-between align-items-center">
                 <div>
-                    <div class="stats-label">Total Trainers</div>
-                    <div class="stats-value">12</div>
+                    <p class="text-muted small fw-bold text-uppercase mb-1">Total Doctors</p>
+                    <h2 class="fw-bold mb-0 text-color-2">{{ $doctorsCount }}</h2>
                 </div>
-                <div class="icon-wrapper icon-blue">
-                    <i class="fas fa-chalkboard-teacher"></i>
+                <div class="icon-wrapper icon-blue rounded-circle p-3 bg-light-blue text-blue">
+                    <i class="fas fa-user-md fa-lg"></i>
                 </div>
+            </div>
+            <div class="mt-3">
+                <span class="text-info small fw-bold">Verified Professionals</span>
             </div>
         </div>
     </div>
-    <!-- Overall Revenue Card -->
+    <!-- Total Appointments -->
     <div class="col-12 col-md-6 col-lg-3 mb-4">
-        <div class="stats-card">
-            <div class="d-flex justify-content-between align-items-start">
+        <div class="stats-card p-4 bg-white shadow-sm border-0 h-100" style="border-radius: 15px; border-left: 5px solid #68D137 !important;">
+            <div class="d-flex justify-content-between align-items-center">
                 <div>
-                    <div class="stats-label">Overall Revenue</div>
-                    <div class="stats-value">₹64,364</div>
-                    <div class="trend-wrapper">
-                        This month
-                        <span class="trend-up">
-                            <i class="fas fa-arrow-up"></i> 8.5%
-                        </span>
-                    </div>
+                    <p class="text-muted small fw-bold text-uppercase mb-1">Appointments</p>
+                    <h2 class="fw-bold mb-0 text-color-2">{{ $appointmentsCount }}</h2>
                 </div>
-                <div class="icon-wrapper icon-green">
-                    <i class="fas fa-rupee-sign"></i>
+                <div class="icon-wrapper icon-green rounded-circle p-3 bg-light-green text-green">
+                    <i class="fas fa-calendar-check fa-lg"></i>
                 </div>
+            </div>
+            <div class="mt-3">
+                <span class="text-success small fw-bold"><i class="fas fa-check-circle me-1"></i> Overall</span>
             </div>
         </div>
     </div>
 </div>
 
-<div class="mt-4">
-    <div class="row">
-        <div class="col-lg-5 mb-4 mb-lg-0">
-            <div class="instructors-section card pb-0">
-                <div class="card-header border-0 bg-white d-flex justify-content-between align-items-center py-3">
-                    <h5 class="mb-0 text-color-2">Traffic Sources</h5>
-                    <div>
-                        <select class="form-select form-select-sm w-auto border-0 text-color-3" aria-label="Select time period">
-                            <option value="30 days" selected>30 days</option>
-                            <option value="15 days">15 days</option>
-                        </select>
-                    </div>
+<div class="row mt-2">
+    <!-- Left Column: Recent Appointments & Traffic -->
+    <div class="col-lg-8 mb-4">
+        <!-- Recent Appointments Table -->
+        <div class="card border-0 shadow-sm mb-4" style="border-radius: 15px;">
+            <div class="card-header bg-white py-3 border-0 d-flex justify-content-between align-items-center">
+                <h5 class="mb-0 fw-bold text-color-2">Recent Appointments</h5>
+                <a href="#" class="text-primary small fw-bold">View History</a>
+            </div>
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle mb-0">
+                        <thead class="bg-light">
+                            <tr>
+                                <th class="ps-4 border-0">Patient</th>
+                                <th class="border-0">Doctor</th>
+                                <th class="border-0">Time</th>
+                                <th class="border-0">Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @forelse($recentAppointments as $appointment)
+                            <tr>
+                                <td class="ps-4">
+                                    <div class="d-flex align-items-center">
+                                        <div class="avatar-sm rounded-circle bg-light text-primary d-flex align-items-center justify-content-center me-2" style="width: 32px; height: 32px; font-size: 12px;">
+                                            {{ strtoupper(substr($appointment->patient->user->name ?? 'P', 0, 1)) }}
+                                        </div>
+                                        <div>
+                                            <div class="fw-semibold text-color-2">{{ $appointment->patient->user->name ?? 'Unknown' }}</div>
+                                            <div class="text-muted extra-small" style="font-size: 10px;">ID: #{{ $appointment->id }}</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="text-color-1 small fw-medium">Dr. {{ $appointment->doctor->user->name ?? 'N/A' }}</div>
+                                </td>
+                                <td>
+                                    <div class="small fw-semibold">{{ \Carbon\Carbon::parse($appointment->appointment_time)->format('M d, H:i') }}</div>
+                                </td>
+                                <td>
+                                    @php
+                                        $statusClass = [
+                                            'completed' => 'success',
+                                            'pending'   => 'warning',
+                                            'cancelled' => 'danger'
+                                        ][strtolower($appointment->Status)] ?? 'info';
+                                    @endphp
+                                    <span class="badge rounded-pill bg-{{ $statusClass }} py-1 px-3" style="font-size: 10px;">{{ ucfirst($appointment->Status) }}</span>
+                                </td>
+                            </tr>
+                            @empty
+                            <tr>
+                                <td colspan="4" class="text-center py-4 text-muted">No recent appointments found</td>
+                            </tr>
+                            @endforelse
+                        </tbody>
+                    </table>
                 </div>
-                <div class="card-body p-0 mt-40">
-                    <div class="mb-2">
-                        <div class="chart-container">
-                            <canvas id="trafficChart"></canvas>
+            </div>
+        </div>
+
+        <!-- Traffic/Platform Stats Row -->
+        <div class="card border-0 shadow-sm" style="border-radius: 15px;">
+            <div class="card-header bg-white py-3 border-0">
+                <h5 class="mb-0 fw-bold text-color-2">Platform Distribution</h5>
+            </div>
+            <div class="card-body p-4 pt-0">
+                <div class="row align-items-center">
+                    <div class="col-md-6 text-center">
+                        <div class="chart-container d-inline-block" style="width: 180px; height: 180px;">
+                            <canvas id="trafficChart" 
+                                data-patients="{{ $patientsCount }}"
+                                data-doctors="{{ $doctorsCount }}"
+                                data-appointments="{{ $appointmentsCount }}">
+                            </canvas>
                         </div>
-                        <div class="mx-5 mt-5 traffic-legend">
-                            <table class="table table-borderless">
-                                <tbody>
-                                    <tr>
-                                        <td><span class="organic text-color-1">Organic Search</span></td>
-                                        <td><span class="text-color-2">4,305</span></td>
-                                    </tr>
-                                    <tr>
-                                        <td><span class="referrals text-color-1">Referrals</span></td>
-                                        <td><span class="text-color-2">482</span></td>
-                                    </tr>
-                                    <tr>
-                                        <td><span class="social-media text-color-1">Social Media</span></td>
-                                        <td><span class="text-color-2">859</span></td>
-                                    </tr>
-                                </tbody>
-                            </table>
+                    </div>
+                    <div class="col-md-6 mt-3 mt-md-0">
+                        <div class="traffic-legend px-3">
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <div class="d-flex align-items-center">
+                                    <div class="rounded-circle me-2" style="width: 12px; height: 12px; background: #43A9D4;"></div>
+                                    <span class="text-color-1 small fw-medium">Patients</span>
+                                </div>
+                                <span class="text-color-2 fw-bold small">{{ $patientsCount }}</span>
+                            </div>
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <div class="d-flex align-items-center">
+                                    <div class="rounded-circle me-2" style="width: 12px; height: 12px; background: #68D137;"></div>
+                                    <span class="text-color-1 small fw-medium">Doctors</span>
+                                </div>
+                                <span class="text-color-2 fw-bold small">{{ $doctorsCount }}</span>
+                            </div>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div class="d-flex align-items-center">
+                                    <div class="rounded-circle me-2" style="width: 12px; height: 12px; background: #7256C5;"></div>
+                                    <span class="text-color-1 small fw-medium">Appointments</span>
+                                </div>
+                                <span class="text-color-2 fw-bold small">{{ $appointmentsCount }}</span>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="col-lg-7 mb-4 ">
-            <div class="instructors-section card pb-1">
-                <div class="card-header bg-white d-flex justify-content-between align-items-center py-4">
-                    <h5 class="mb-0 text-color-2">Top Instructors</h5>
-                    <a href="#" class="text-color-3">View All</a>
-                </div>
-                <div class="card-body p-0">
-                    <ul class="list-group list-group-flush">
-                        <li class="list-group-item d-flex align-items-center py-3">
-                            <div class="avatar rounded-circle bg-primary text-white me-3">AB</div>
-                            <div class="flex-grow-1">
-                                <h6 class="mb-0 text-color-2">Sofnio</h6>
-                                <small class="text-color-3">info@softnio.com</small>
-                            </div>
-                            <div class="text-end">
-                                <div class="rating-stars text-size-13">
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                </div>
-                                <small class="d-block text-color-3">25 Reviews</small>
-                            </div>
-                        </li>
-                        <li class="list-group-item d-flex align-items-center py-3">
-                            <div class="avatar rounded-circle bg-info text-white me-3">AL</div>
-                            <div class="flex-grow-1">
-                                <h6 class="mb-0 text-color-2">Ashley Lawson</h6>
-                                <small class="text-color-3">ashley@softnio.com</small>
-                            </div>
-                            <div class="text-end">
-                                <div class="rating-stars text-size-13">
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                </div>
-                                <small class="d-block text-color-3">22 Reviews</small>
-                            </div>
-                        </li>
-                        <li class="list-group-item d-flex align-items-center py-3">
-                            <div class="avatar rounded-circle bg-success text-white me-3">JM</div>
-                            <div class="flex-grow-1">
-                                <h6 class="mb-0 text-color-2">Jane Montgomery</h6>
-                                <small class="text-color-3">jane84@example.com</small>
-                            </div>
-                            <div class="text-end">
-                                <div class="rating-stars text-size-13">
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star-half-alt"></i>
-                                </div>
-                                <small class="d-block text-color-3">19 Reviews</small>
-                            </div>
-                        </li>
-                        <li class="list-group-item d-flex align-items-center py-3">
-                            <div class="avatar rounded-circle bg-secondary text-white me-3">LH</div>
-                            <div class="flex-grow-1">
-                                <h6 class="mb-0 text-color-2">Larry Henry</h6>
-                                <small class="text-color-3">larry108@example.com</small>
-                            </div>
-                            <div class="text-end">
-                                <div class="rating-stars text-size-13">
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star-half-alt"></i>
-                                </div>
-                                <small class="d-block text-color-3">24 Reviews</small>
-                            </div>
-                        </li>
-                    </ul>
-                </div>
+    </div>
+
+    <!-- Right Column: Top Doctors & Quick Actions -->
+    <div class="col-lg-4 mb-4">
+        <!-- Top Doctors List -->
+        <div class="card border-0 shadow-sm h-100" style="border-radius: 15px;">
+            <div class="card-header bg-white py-3 border-0 d-flex justify-content-between align-items-center">
+                <h5 class="mb-0 fw-bold text-color-2">Featured Doctors</h5>
+                <a href="{{ route('admin.doctors.index') }}" class="text-primary small fw-bold">View All</a>
             </div>
-        </div>
-        <div class="col-lg-8 mb-4 mb-lg-0">
-            <div class="instructors-section card">
-                <div class="card-header border-0 bg-white d-flex justify-content-between align-items-center py-3">
-                    <h5 class="mb-0 text-color-2">Conversions</h5>
-                    <div>
-                        <select class="form-select form-select-sm w-auto border-0 text-color-3" aria-label="Select time period">
-                            <option value="30 days" selected>30 days</option>
-                            <option value="15 days">15 days</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="card-body">
-                    <canvas id="barChart" class="mt-5" height="96"></canvas>
-                </div>
+            <div class="card-body p-0">
+                <ul class="list-group list-group-flush px-2">
+                    @foreach ($doctors as $doctor)
+                    <li class="list-group-item d-flex align-items-center py-3 border-0 mb-1 rounded" style="transition: all 0.2s;">
+                        <div class="avatar-md rounded bg-light text-primary d-flex align-items-center justify-content-center me-3 shadow-sm" style="width: 45px; height: 45px; border-radius: 12px !important;">
+                            <i class="fas fa-user-md fa-lg"></i>
+                        </div>
+                        <div class="flex-grow-1">
+                            <h6 class="mb-0 fw-bold text-color-2">Dr. {{ $doctor->user->name }}</h6>
+                            <small class="text-primary fw-medium">{{ $doctor->specialization->name ?? 'Specialist' }}</small>
+                            <div class="text-muted extra-small mt-1" style="font-size: 10px;">
+                                <i class="fas fa-hospital me-1"></i> {{ $doctor->clinic->name_clinic ?? 'Private Clinic' }}
+                            </div>
+                        </div>
+                        <div class="text-end">
+                            <div class="badge bg-light text-success border-success-subtle p-2">
+                                <i class="fas fa-star small"></i> 4.8
+                            </div>
+                        </div>
+                    </li>
+                    @endforeach
+                </ul>
             </div>
-        </div>
-        <div class="col-lg-4">
-            <div class="instructors-section card pb-1">
-                <div class="card-header bg-white d-flex justify-content-between align-items-center py-4">
-                    <h5 class="mb-0 text-color-2">Top Categories</h5>
-                    <a href="#" class="text-color-3">View All</a>
-                </div>
-                <div class="card-body p-0">
-                    <ul class="list-group list-group-flush">
-                        <li class="list-group-item d-flex align-items-center py-3">
-                            <div class="avatar rounded-circle bg-primary text-white me-3">AB</div>
-                            <div class="flex-grow-1">
-                                <h6 class="mb-0 text-color-2">Digital Marketing</h6>
-                                <small class="text-color-3">16+ Courses</small>
-                            </div>
-                            <div class="text-end">
-                                <i class="fa-solid fa-chevron-right arrow-icon"></i>
-                            </div>
-                        </li>
-                        <li class="list-group-item d-flex align-items-center py-3">
-                            <div class="avatar rounded-circle bg-info text-white me-3">AL</div>
-                            <div class="flex-grow-1">
-                                <h6 class="mb-0 text-color-2">Web Development</h6>
-                                <small class="text-color-3">16+ Courses</small>
-                            </div>
-                            <div class="text-end">
-                                <i class="fa-solid fa-chevron-right arrow-icon"></i>
-                            </div>
-                        </li>
-                        <li class="list-group-item d-flex align-items-center py-3">
-                            <div class="avatar rounded-circle bg-success text-white me-3">JM</div>
-                            <div class="flex-grow-1">
-                                <h6 class="mb-0 text-color-2">UI/UX Design</h6>
-                                <small class="text-color-3">16+ Courses</small>
-                            </div>
-                            <div class="text-end">
-                                <i class="fa-solid fa-chevron-right arrow-icon"></i>
-                            </div>
-                        </li>
-                        <li class="list-group-item d-flex align-items-center py-3">
-                            <div class="avatar rounded-circle bg-secondary text-white me-3">LH</div>
-                            <div class="flex-grow-1">
-                                <h6 class="mb-0 text-color-2">Graphic Design</h6>
-                                <small class="text-color-3">16+ Courses</small>
-                            </div>
-                            <div class="text-end">
-                                <i class="fa-solid fa-chevron-right arrow-icon"></i>
-                            </div>
-                        </li>
-                    </ul>
-                </div>
+            <div class="card-footer bg-white border-0 py-3 text-center">
+                <p class="text-muted small mb-0">Updated every 5 minutes</p>
             </div>
         </div>
     </div>

@@ -2,24 +2,29 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const trafficChart = document.getElementById('trafficChart');
     if(trafficChart){
+        const patients = parseInt(trafficChart.getAttribute('data-patients')) || 0;
+        const doctors = parseInt(trafficChart.getAttribute('data-doctors')) || 0;
+        const appointments = parseInt(trafficChart.getAttribute('data-appointments')) || 0;
+
         new Chart(trafficChart.getContext('2d'), {
             type: 'doughnut',
             data: {
-                labels: ['Organic Search', 'Referrals', 'Social Media'],
+                labels: ['Patients', 'Doctors', 'Appointments'],
                 datasets: [{
-                    data: [435, 302, 138],
+                    data: [patients, doctors, appointments],
                     backgroundColor: ['#43A9D4', '#68D137', '#7256C5'],
                     borderWidth: 0
                 }]
             },
             options: {
                 responsive: true,
+                maintainAspectRatio: false,
                 plugins: {
                     legend: {
                         display: false
                     }
                 },
-                cutout: '70%'
+                cutout: '75%'
             }
         });
     }
