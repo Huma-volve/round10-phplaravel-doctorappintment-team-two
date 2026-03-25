@@ -7,6 +7,7 @@ use App\Http\Controllers\AdminAuth\AuthController;
 use App\Http\Controllers\Dashboard\ChatController;
 use App\Http\Controllers\AdminDoctor\DoctorController;
 use App\Http\Controllers\Booking\BookingController;
+use App\Http\Controllers\Booking\PatientController;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,7 +20,6 @@ Route::prefix('dashboard')->group(function () {
     Route::get('/login', [AuthController::class, 'showLogin'])->name('show-login');
     Route::post('/login', [AuthController::class, 'login'])->name('login-dash');
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout-dash');
-
 });
 
 Route::get('/signup-dash', function () {
@@ -149,9 +149,6 @@ Route::middleware(['admin:admin,doctor'])->group(function () {
             Route::get('/policies/create', [PolicyController::class, 'create'])->name('policies.create');
             Route::post('/policies', [PolicyController::class, 'store'])->name('policies.store');
             Route::delete('/policies/{id}', [PolicyController::class, 'destroy'])->name('policies.destroy');
-
-      
-            
         });
 
         /*
@@ -169,16 +166,29 @@ Route::middleware(['admin:admin,doctor'])->group(function () {
             Route::post('/add-specialization', [DoctorController::class, 'storeSpecialization'])->name('admin.doctors.store-specialization');
             Route::get('/add-clinic', [DoctorController::class, 'createClinic'])->name('admin.doctors.create-clinic');
             Route::post('/add-clinic', [DoctorController::class, 'storeClinic'])->name('admin.doctors.store-clinic');
-            
         });
 
         //BOOKING
         Route::prefix('admin/Booking')->group(function () {
-         Route::get('/', [BookingController::class, 'index'])->name('admin.booking.index');
-         Route::get('/create', [BookingController::class, 'create'])->name('admin.booking.create');
-        //  Route::get('/', [BookingController::class, 'index'])->name('admin.booking.index');
-         
+            Route::get('/', [BookingController::class, 'index'])->name('admin.booking.index');
+            //  Route::get('/create', [BookingController::class, 'create'])->name('admin.booking.create');
+            //      Route::post('/', [BookingController::class, 'store'])->name('admin.booking.store');
+            //  Route::post('/confirm/{id}', [BookingController::class, 'confirm']) ->name('admin.booking.confirm');
+
+        });
+        Route::prefix('patient/bookings')->group(function () {
+
+            // عرض كل المواعيد + الدفع
+            Route::get('/', [PatientController::class, 'index'])->name('patient.bookings.idex');
+
+            // // صفحة إنشاء حجز
+            // Route::get('/create', [BookingController::class, 'create'])->name('create');
+
+            // // // حفظ الحجز + الدفع
+            // Route::post('/', [BookingController::class, 'store'])->name('store');
+
+            // // تأكيد الحجز + الدفع
+            // Route::post('/confirm/{id}', [BookingController::class, 'confirm'])->name('confirm');
         });
     });
-
 });
