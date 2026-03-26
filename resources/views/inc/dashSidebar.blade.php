@@ -57,9 +57,9 @@
                     <p>Booking <i class="fa-solid fa-chevron-right right-icon"></i></p>
                 </a>
                 <ul class="sidebar-submenu">
-                    <li><a href="{{ route('admin.booking.index') }}" class="submenu-link">Booking All</a></li>
-                    <li><a href="{{ route('admin.booking.create') }}" class="submenu-link">Add Booking</a>
-            </li> 
+                         <li><a href="{{ route('admin.booking.index') }}" class="submenu-link">Booking All</a></li>
+                         {{-- <li><a href="{{ route('admin.booking.create') }}" class="submenu-link">Add Booking</a></li> --}}
+                         <li><a href="{{ route('patient.bookings.idex') }}" class="submenu-link">Patients</a></li>
 
                 </ul>
             </li>

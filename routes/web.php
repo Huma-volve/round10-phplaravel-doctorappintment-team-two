@@ -10,7 +10,11 @@ use App\Http\Controllers\AdminDoctor\DoctorController;
 use App\Http\Controllers\Dashboard\UserController;
 use App\Http\Controllers\Dashboard\HomeController;
 use App\Http\Controllers\Booking\BookingController;
+<<<<<<< HEAD
+use App\Http\Controllers\Booking\PatientController;
+=======
 use App\Http\Controllers\Admin\ReviewController;
+>>>>>>> 4ce81c11205b2729d0a7768e9a9b9197e1ed6489
 
 /*
 |--------------------------------------------------------------------------
@@ -259,25 +263,24 @@ Route::middleware(['admin'])->group(function () {
         //BOOKING
         Route::prefix('admin/Booking')->group(function () {
             Route::get('/', [BookingController::class, 'index'])->name('admin.booking.index');
-            Route::get('/create', [BookingController::class, 'create'])->name('admin.booking.create');
-            //  Route::get('/', [BookingController::class, 'index'])->name('admin.booking.index');
+            //  Route::get('/create', [BookingController::class, 'create'])->name('admin.booking.create');
+            //      Route::post('/', [BookingController::class, 'store'])->name('admin.booking.store');
+            //  Route::post('/confirm/{id}', [BookingController::class, 'confirm']) ->name('admin.booking.confirm');
 
         });
-    });
-    Route::get('/review', [ReiewController::class, 'create'])->name('review.create');
-    Route::post('/review', [ReiewController::class, 'store'])->name('review.store');
+        Route::prefix('patient/bookings')->group(function () {
 
-    /*
-    |--------------------------------------------------------------------------
-    | Admin Doctors
-    |--------------------------------------------------------------------------
-    */
+            // عرض كل المواعيد + الدفع
+            Route::get('/', [PatientController::class, 'index'])->name('patient.bookings.idex');
 
-    Route::prefix('admin/doctor')->group(function () {
+            // // صفحة إنشاء حجز
+            // Route::get('/create', [BookingController::class, 'create'])->name('create');
 
-        Route::get('/', [DoctorController::class, 'index'])->name('admin.doctors.index');
-        Route::get('/create', [DoctorController::class, 'create'])->name('admin.doctors.create');
-        Route::post('/', [DoctorController::class, 'store'])->name('admin.doctors.store');
-        Route::delete('/{id}', [DoctorController::class, 'destroy'])->name('admin.doctors.destroy');
+            // // // حفظ الحجز + الدفع
+            // Route::post('/', [BookingController::class, 'store'])->name('store');
+
+            // // تأكيد الحجز + الدفع
+            // Route::post('/confirm/{id}', [BookingController::class, 'confirm'])->name('confirm');
+        });
     });
 });
